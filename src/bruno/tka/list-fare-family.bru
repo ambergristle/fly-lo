@@ -1,0 +1,20 @@
+meta {
+  name: list-fare-family
+  type: http
+  seq: 2
+}
+post {
+  url: {{TKA_BASE_URL}}/test/getFareFamilyList
+  body: json
+  auth: none
+}
+headers {
+  apikey: {{TKA_KEY}}
+  apisecret: {{TKA_SECRET}}
+}
+body:json {
+  {
+    "isMilesRequest": "T",
+    "portList": ["SFO", "ATH"]
+  }
+}

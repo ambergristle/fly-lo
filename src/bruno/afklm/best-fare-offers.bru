@@ -1,0 +1,39 @@
+meta {
+  name: best-fare-offers
+  type: http
+  seq: 1
+}
+post {
+  url: {{KLM_BASE_URL}}/opendata/offers/{{KLM_VERSION}}/best-fare-offers
+  body: json
+  auth: none
+}
+headers {
+  Api-Key: {{KLM_API_KEY}}
+  AFKL-TRAVEL-Host: AF
+  Accept: application/hal+json
+}
+body:json {
+  {
+    "departureDate": "2024-07-23",
+    "bookingFlow": "REWARD",
+    "commercialCabins": ["BUSINESS"],
+    "customer": {},
+    "commercialCabin": "BUSINESS",
+    "passengers": [{
+      "id": 0,
+      "type": "ADT"
+    }],
+    "requestedConnections": [{
+      "departureDate": "2024-08-23",
+      "origin": {
+        "type": "AIRPORT",
+        "code": "SFO"
+      },
+      "destination": {
+        "type": "AIRPORT",
+        "code": "ATH"
+      }
+    }]
+  }
+}

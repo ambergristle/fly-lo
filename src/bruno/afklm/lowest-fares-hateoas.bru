@@ -1,0 +1,17 @@
+meta {
+  name: lowest-fares-hateoas
+  type: http
+  seq: 4
+}
+get {
+  url: {{KLM_BASE_URL}}/opendata/offers/{{KLM_VERSION}}/lowest-fare-offers?d=q0YZ-4OGJkr7rxrYXTKAluGg0hCoG2MULBpRGMViFrFgixDDNNW1GK3XWmztbIg2eL0N4WLvEUHksDe9qtFGZowMjEx0DSx0jYzh7elqyKhgsJs_rLKCx3stypAMVKEjMCAxFSIaQbGIShPqakhPLxYYdhj9zlioSZDsWwsAdbb6eec32ae&dateInterval=2023-12-16/2024-12-09
+  body: none
+  auth: none
+}
+query {
+  d: q0YZ-4OGJkr7rxrYXTKAluGg0hCoG2MULBpRGMViFrFgixDDNNW1GK3XWmztbIg2eL0N4WLvEUHksDe9qtFGZowMjEx0DSx0jYzh7elqyKhgsJs_rLKCx3stypAMVKEjMCAxFSIaQbGIShPqakhPLxYYdhj9zlioSZDsWwsAdbb6eec32ae&dateInterval=2023-12-16/2024-12-09
+}
+headers {
+  Api-Key: {{KLM_API_KEY}}
+  AFKL-TRAVEL-Host: AF
+}

@@ -1,0 +1,55 @@
+meta {
+  name: get-availability
+  type: http
+  seq: 1
+}
+post {
+  url: {{TKA_BASE_URL}}/test/getAvailability
+  body: json
+  auth: none
+}
+headers {
+  apikey: {{TKA_KEY}}
+  apisecret: {{TKA_SECRET}}
+}
+body:json {
+  {
+    "requestHeader": {
+      "clientUsername": "OPENAPI",
+      "clientTransactionId": "0",
+      "channel": "WEB",
+      "languageCode": "EN"
+    },
+    "ReducedDataIndicator": false,
+    "TargetSource": "AWT",
+    "OriginDestinationInformation": [
+      {
+        "OriginLocation": {
+          "MultiAirportCityInd": false,
+          "LocationCode": "SFO"
+        },
+        "CabinPreferences": [
+          {
+            "Cabin": "BUSINESS"
+          }
+        ],
+        "DepartureDateTime": {
+          "WindowAfter": "P0D",
+          "WindowBefore": "P0D",
+          "Date": "25DEC"
+        },
+        "DestinationLocation": {
+          "MultiAirportCityInd": false,
+          "LocationCode": "ATH"
+        }
+      }
+    ],
+    "PassengerTypeQuantity": [
+      {
+        "Quantity": 1,
+        "Code": "ADULT"
+      }
+    ],
+    "RoutingType": "O"
+  }
+}

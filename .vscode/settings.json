@@ -8,6 +8,15 @@
     "files.insertFinalNewline": true,
     "typescript.preferences.quoteStyle": "single",
     "eslint.format.enable": true,
-    "editor.defaultFormatter": "vscode.typescript-language-features"
+    "editor.defaultFormatter": "vscode.typescript-language-features",
+
+    "eslint.validate": [
+      "javascript",
+      "typescript",
+      "svelte"
+    ],
+    "[json]": {
+      "editor.defaultFormatter": "vscode.json-language-features"
+    },
   }
   

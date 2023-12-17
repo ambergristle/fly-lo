@@ -1,0 +1,1809 @@
+{
+  "openapi": "3.0.1",
+  "info": {
+    "title": "RESTful getAvailability APIs",
+    "description": "Detailed Availability List",
+    "version": "0.1"
+  },
+  "servers": [
+    {
+      "url": "https://api.turkishairlines.com"
+    }
+  ],
+  "tags": [
+    {
+      "name": "getAvailability 1.0",
+      "description": "Development environment"
+    }
+  ],
+  "paths": {
+    "/test/getAvailability": {
+      "post": {
+        "tags": [
+          "getAvailability 1.0"
+        ],
+        "summary": "Get API",
+        "description": "Get list of all availabilities for given O&D.",
+        "parameters": [
+          {
+            "name": "apikey",
+            "in": "header",
+            "description": "An active TK API Key for the getAvailability API",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "apisecret",
+            "in": "header",
+            "description": " An active TK API Secret for the getAvailability API",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/getAvailabilityRequest"
+              },
+              "examples": {
+                "getAvailabilityRequest": {
+                  "summary": "getAvailabilityRequest Example",
+                  "externalValue": "https://developer.turkishairlines.com/documentation/get-availability"
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/body"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "BAD_REQUEST",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponseDetail"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "UNAUTHORIZED",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponseDetail"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "FORBIDDEN",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponseDetail"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "NOT_FOUND",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponseDetail"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "INTERNAL_SERVER_ERROR",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponseDetail"
+                }
+              }
+            }
+          }
+        },
+        "servers": [
+          {
+            "url": "https://api.turkishairlines.com"
+          }
+        ]
+      },
+      "servers": [
+        {
+          "url": "https://api.turkishairlines.com"
+        }
+      ]
+    }
+  },
+  "components": {
+    "schemas": {
+      "getAvailabilityRequest": {
+        "type": "object",
+        "properties": {
+          "requestHeader": {
+            "type": "object",
+            "properties": {
+              "clientUsername": {
+                "description": "Client Username",
+                "type": "string"
+              },
+              "clientTransactionId": {
+                "description": "A unique id to identify transaction",
+                "type": "string"
+              },
+              "channel": {
+                "description": "Channel info",
+                "type": "string"
+              },
+              "languageCode": {
+                "description": "Language Code",
+                "type": "string"
+              },
+              "airlineCode": {
+                "description": "Airline info",
+                "type": "string"
+              },
+              "extraParameters": {
+                "type": "array",
+                "items": {
+                  "$ref": "#/components/schemas/requestHeader_extraParameters"
+                }
+              }
+            }
+          },
+          "TargetSource": {
+            "type": "string"
+          },
+          "OriginDestinationInformation": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/OriginDestinationInformationInput"
+            }
+          },
+          "PassengerTypeQuantity": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/PassengerTypeQuantityInput"
+            }
+          },
+          "ReducedDataIndicator": {
+            "type": "boolean"
+          },
+          "PriceRequestInformation": {
+            "$ref": "#/components/schemas/PriceRequestInformation"
+          },
+          "RoutingType": {
+            "type": "string"
+          }
+        }
+      },
+      "requestHeader_extraParameters": {
+        "type": "object",
+        "properties": {
+          "value": {
+            "type": "string"
+          },
+          "key": {
+            "type": "string"
+          }
+        }
+      },
+      "OriginLocation": {
+        "type": "object",
+        "properties": {
+          "MultiAirportCityInd": {
+            "type": "boolean"
+          },
+          "LocationCode": {
+            "type": "string"
+          }
+        }
+      },
+      "CabinPreferences": {
+        "type": "object",
+        "properties": {
+          "Cabin": {
+            "type": "string"
+          }
+        }
+      },
+      "DepartureDateTime": {
+        "type": "object",
+        "properties": {
+          "WindowAfter": {
+            "type": "string"
+          },
+          "WindowBefore": {
+            "type": "string"
+          },
+          "Date": {
+            "type": "string"
+          }
+        }
+      },
+      "OriginDestinationInformationInput": {
+        "type": "object",
+        "properties": {
+          "OriginLocation": {
+            "$ref": "#/components/schemas/OriginLocation"
+          },
+          "CabinPreferences": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/CabinPreferences"
+            }
+          },
+          "DepartureDateTime": {
+            "$ref": "#/components/schemas/DepartureDateTime"
+          },
+          "DestinationLocation": {
+            "$ref": "#/components/schemas/OriginLocation"
+          }
+        }
+      },
+      "PassengerTypeQuantityInput": {
+        "type": "object",
+        "properties": {
+          "Quantity": {
+            "type": "integer"
+          },
+          "Code": {
+            "type": "string"
+          }
+        }
+      },
+      "PriceRequestInformation_Account": {
+        "type": "object",
+        "properties": {
+          "Code": {
+            "type": "string"
+          }
+        }
+      },
+      "PriceRequestInformation_NegotiatedFareCode": {
+        "type": "object",
+        "properties": {
+          "CodeContext": {
+            "type": "string"
+          }
+        }
+      },
+      "PriceRequestInformation_DiscountPricing": {
+        "type": "object",
+        "properties": {
+          "Type": {
+            "type": "string"
+          }
+        }
+      },
+      "PriceRequestInformation": {
+        "type": "object",
+        "properties": {
+          "Account": {
+            "$ref": "#/components/schemas/PriceRequestInformation_Account"
+          },
+          "NegotiatedFareCode": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/PriceRequestInformation_NegotiatedFareCode"
+            }
+          },
+          "DiscountPricing": {
+            "$ref": "#/components/schemas/PriceRequestInformation_DiscountPricing"
+          }
+        }
+      },
+      "Warning": {
+        "type": "object",
+        "properties": {
+          "Type": {
+            "type": "string"
+          },
+          "RPH": {
+            "type": "string"
+          },
+          "Code": {
+            "type": "string"
+          }
+        }
+      },
+      "Warnings": {
+        "type": "object",
+        "properties": {
+          "Warning": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Warning"
+            }
+          }
+        }
+      },
+      "FareAmount": {
+        "type": "object",
+        "properties": {
+          "CurrencyCode": {
+            "type": "string"
+          },
+          "Amount": {
+            "type": "number"
+          }
+        }
+      },
+      "fareBrandOtaResponseItems": {
+        "type": "object",
+        "properties": {
+          "BrandName": {
+            "type": "string"
+          },
+          "BonusMile": {
+            "type": "boolean"
+          },
+          "BrandCode": {
+            "type": "string"
+          },
+          "CarrierCode": {
+            "type": "string"
+          },
+          "SeatSelection": {
+            "type": "boolean"
+          },
+          "BonusMileAmount": {
+            "type": "integer"
+          },
+          "BrandKey": {
+            "type": "string"
+          },
+          "BrandIndex": {
+            "type": "integer"
+          }
+        }
+      },
+      "extraOTABrandInfoList": {
+        "type": "object",
+        "properties": {
+          "fareBrandOtaResponseItems": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/fareBrandOtaResponseItems"
+            }
+          }
+        }
+      },
+      "extraOTASegmentInfoList": {
+        "type": "object",
+        "properties": {
+          "isAvailable": {
+            "type": "boolean"
+          },
+          "isConnected": {
+            "type": "boolean"
+          },
+          "segmentIndex": {
+            "type": "integer"
+          },
+          "isAnadoluJetSegment": {
+            "type": "boolean"
+          },
+          "isDomestic": {
+            "type": "boolean"
+          },
+          "isStandBySeat": {
+            "type": "boolean"
+          }
+        }
+      },
+      "extraOTASegmentInfoListType": {
+        "type": "object",
+        "properties": {
+          "extraOTASegmentInfoList": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/extraOTASegmentInfoList"
+            }
+          }
+        }
+      },
+      "CarryOnBaggageAllowance_FreeBaggageAllowance": {
+        "type": "object",
+        "properties": {
+          "pieces": {
+            "type": "integer"
+          },
+          "kilos": {
+            "type": "integer"
+          }
+        }
+      },
+      "CarryOnBaggageAllowance": {
+        "type": "object",
+        "properties": {
+          "FreeBaggageAllowance": {
+            "$ref": "#/components/schemas/CarryOnBaggageAllowance_FreeBaggageAllowance"
+          }
+        }
+      },
+      "PercentageOrFixedAmount_FixedAmount": {
+        "type": "object",
+        "properties": {
+          "CurrencyCode": {
+            "type": "string"
+          },
+          "Amount": {
+            "type": "number"
+          }
+        }
+      },
+      "PercentageOrFixedAmount": {
+        "type": "object",
+        "properties": {
+          "FixedAmount": {
+            "$ref": "#/components/schemas/PercentageOrFixedAmount_FixedAmount"
+          }
+        }
+      },
+      "TimeToDeparture": {
+        "type": "object",
+        "properties": {
+          "TimePeriodCondition": {
+            "type": "string"
+          },
+          "TimeUnit": {
+            "type": "string"
+          },
+          "TimeAmount": {
+            "type": "integer"
+          }
+        }
+      },
+      "ChangePenalty": {
+        "type": "object",
+        "properties": {
+          "PercentageOrFixedAmount": {
+            "$ref": "#/components/schemas/PercentageOrFixedAmount"
+          },
+          "TimeToDeparture": {
+            "$ref": "#/components/schemas/TimeToDeparture"
+          },
+          "IsChangeable": {
+            "type": "boolean"
+          }
+        }
+      },
+      "ChangePenaltyList": {
+        "type": "object",
+        "properties": {
+          "ChangePenalty": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/ChangePenalty"
+            }
+          }
+        }
+      },
+      "CancellationPenaltyList_CancellationPenalty": {
+        "type": "object",
+        "properties": {
+          "IsRefundable": {
+            "type": "boolean"
+          },
+          "TimeToDeparture": {
+            "$ref": "#/components/schemas/TimeToDeparture"
+          }
+        }
+      },
+      "CancellationPenaltyList": {
+        "type": "object",
+        "properties": {
+          "CancellationPenalty": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/CancellationPenaltyList_CancellationPenalty"
+            }
+          }
+        }
+      },
+      "PenaltyMiniRule": {
+        "type": "object",
+        "properties": {
+          "ChangePenaltyList": {
+            "$ref": "#/components/schemas/ChangePenaltyList"
+          },
+          "CancellationPenaltyList": {
+            "$ref": "#/components/schemas/CancellationPenaltyList"
+          }
+        }
+      },
+      "MiniRules": {
+        "type": "object",
+        "properties": {
+          "PassengerType": {
+            "type": "string"
+          },
+          "MealCommercialName": {
+            "type": "string"
+          },
+          "CarryOnBaggageAllowance": {
+            "$ref": "#/components/schemas/CarryOnBaggageAllowance"
+          },
+          "BrandCode": {
+            "type": "string"
+          },
+          "PenaltyMiniRule": {
+            "$ref": "#/components/schemas/PenaltyMiniRule"
+          },
+          "BusinessLounge": {
+            "type": "string"
+          },
+          "RPH": {
+            "type": "string"
+          },
+          "MealSubCode": {
+            "type": "string"
+          },
+          "BrandKey": {
+            "type": "string"
+          },
+          "CheckedBaggageAllowance": {
+            "$ref": "#/components/schemas/CarryOnBaggageAllowance"
+          }
+        }
+      },
+      "miniRulesList": {
+        "type": "object",
+        "properties": {
+          "MiniRules": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/MiniRules"
+            }
+          }
+        }
+      },
+      "FareBasisCodes_FareBasisCode": {
+        "type": "object",
+        "properties": {
+          "FlightSegmentRPH": {
+            "type": "string"
+          },
+          "content": {
+            "type": "string"
+          }
+        }
+      },
+      "FareBasisCodes": {
+        "type": "object",
+        "properties": {
+          "FareBasisCode": {
+            "$ref": "#/components/schemas/FareBasisCodes_FareBasisCode"
+          }
+        }
+      },
+      "PassengerTypeQuantity": {
+        "type": "object",
+        "properties": {
+          "CodeContext": {
+            "type": "string"
+          },
+          "Quantity": {
+            "type": "integer"
+          },
+          "Code": {
+            "type": "string"
+          }
+        }
+      },
+      "FareInfo_FareInfo": {
+        "type": "object",
+        "properties": {
+          "FareType": {
+            "type": "string"
+          },
+          "RPH": {
+            "type": "string"
+          }
+        }
+      },
+      "FareInfo_FareReference": {
+        "type": "object",
+        "properties": {
+          "ResBookDesigCode": {
+            "type": "string"
+          },
+          "content": {
+            "type": "string"
+          }
+        }
+      },
+      "FareInfo": {
+        "type": "object",
+        "properties": {
+          "FareInfo": {
+            "$ref": "#/components/schemas/FareInfo_FareInfo"
+          },
+          "PassengerFare": {
+            "type": "string"
+          },
+          "FareReference": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/FareInfo_FareReference"
+            }
+          }
+        }
+      },
+      "PassengerFare_Taxes_Tax": {
+        "type": "object",
+        "properties": {
+          "CurrencyCode": {
+            "type": "string"
+          },
+          "TaxCode": {
+            "type": "string"
+          },
+          "Amount": {
+            "type": "number"
+          },
+          "RefundableInd": {
+            "type": "boolean"
+          }
+        }
+      },
+      "PassengerFare_Taxes": {
+        "type": "object",
+        "properties": {
+          "Tax": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/PassengerFare_Taxes_Tax"
+            }
+          }
+        }
+      },
+      "PassengerFare_FareBaggageAllowance": {
+        "type": "object",
+        "properties": {
+          "UnitOfMeasureCode": {
+            "type": "string"
+          },
+          "UnitOfMeasure": {
+            "type": "string"
+          },
+          "UnitOfMeasureQuantity": {
+            "type": "number"
+          },
+          "FlightSegmentRPH": {
+            "type": "string"
+          }
+        }
+      },
+      "PassengerFare": {
+        "type": "object",
+        "properties": {
+          "TotalFare": {
+            "$ref": "#/components/schemas/FareAmount"
+          },
+          "Taxes": {
+            "$ref": "#/components/schemas/PassengerFare_Taxes"
+          },
+          "BaseFare": {
+            "$ref": "#/components/schemas/FareAmount"
+          },
+          "FareBaggageAllowance": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/PassengerFare_FareBaggageAllowance"
+            }
+          },
+          "TourCode": {
+            "type": "string"
+          }
+        }
+      },
+      "PTC_FareBreakdown": {
+        "type": "object",
+        "properties": {
+          "FareBasisCodes": {
+            "$ref": "#/components/schemas/FareBasisCodes"
+          },
+          "PassengerTypeQuantity": {
+            "$ref": "#/components/schemas/PassengerTypeQuantity"
+          },
+          "FareInfo": {
+            "$ref": "#/components/schemas/FareInfo"
+          },
+          "PassengerFare": {
+            "$ref": "#/components/schemas/PassengerFare"
+          }
+        }
+      },
+      "PTC_FareBreakdowns": {
+        "type": "object",
+        "properties": {
+          "PTC_FareBreakdown": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/PTC_FareBreakdown"
+            }
+          }
+        }
+      },
+      "bookingPriceInfoType": {
+        "type": "object",
+        "properties": {
+          "PTC_FareBreakdowns": {
+            "$ref": "#/components/schemas/PTC_FareBreakdowns"
+          }
+        }
+      },
+      "extraOTAFlightInfoList": {
+        "type": "object",
+        "properties": {
+          "isPureAnadoluJetFlight": {
+            "type": "boolean"
+          },
+          "extraOTASegmentInfoListType": {
+            "$ref": "#/components/schemas/extraOTASegmentInfoListType"
+          },
+          "isElectronicTicketAvailable": {
+            "type": "boolean"
+          },
+          "isMarketable": {
+            "type": "boolean"
+          },
+          "isCodeShare": {
+            "type": "boolean"
+          },
+          "isFullCodeShare": {
+            "type": "boolean"
+          },
+          "miniRulesList": {
+            "$ref": "#/components/schemas/miniRulesList"
+          },
+          "isDomestic": {
+            "type": "boolean"
+          },
+          "isFullInternational": {
+            "type": "boolean"
+          },
+          "flightNumber": {
+            "type": "string"
+          },
+          "StandbyIndicator": {
+            "type": "boolean"
+          },
+          "bookingPriceInfoType": {
+            "$ref": "#/components/schemas/bookingPriceInfoType"
+          },
+          "isFullAvailable": {
+            "type": "boolean"
+          }
+        }
+      },
+      "extraOTAFlightInfoListType": {
+        "type": "object",
+        "properties": {
+          "extraOTAFlightInfoList": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/extraOTAFlightInfoList"
+            }
+          }
+        }
+      },
+      "extraOTAAvailabilityInfoList": {
+        "type": "object",
+        "properties": {
+          "extraOTAFlightInfoListType": {
+            "$ref": "#/components/schemas/extraOTAFlightInfoListType"
+          },
+          "isAllFlightsFullCodeShare": {
+            "type": "boolean"
+          },
+          "isIndeedHasMoreFlightsForAnotherPortInTheSameCity": {
+            "type": "boolean"
+          },
+          "RPH": {
+            "type": "string"
+          }
+        }
+      },
+      "extraOTAAvailabilityInfoListType": {
+        "type": "object",
+        "properties": {
+          "extraOTAAvailabilityInfoList": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/extraOTAAvailabilityInfoList"
+            }
+          }
+        }
+      },
+      "Location": {
+        "type": "object",
+        "properties": {
+          "AlternateLocationInd": {
+            "type": "boolean"
+          },
+          "LocationCode": {
+            "type": "string"
+          }
+        }
+      },
+      "Airport": {
+        "type": "object",
+        "properties": {
+          "LocationCode": {
+            "type": "string"
+          }
+        }
+      },
+      "BookingClassAvail": {
+        "type": "object",
+        "properties": {
+          "ResBookDesigQuantity": {
+            "type": "string"
+          },
+          "ResBookDesigStatusCode": {
+            "type": "string"
+          },
+          "ResBookDesigCode": {
+            "type": "string"
+          },
+          "RPH": {
+            "type": "string"
+          }
+        }
+      },
+      "Equipment": {
+        "type": "object",
+        "properties": {
+          "Value": {
+            "type": "string"
+          },
+          "AirEquipType": {
+            "type": "string"
+          }
+        }
+      },
+      "OperatingAirline": {
+        "type": "object",
+        "properties": {
+          "CompanyShortName": {
+            "type": "string"
+          }
+        }
+      },
+      "FlightSegment": {
+        "type": "object",
+        "properties": {
+          "DepartureAirport": {
+            "$ref": "#/components/schemas/Airport"
+          },
+          "Ticket": {
+            "type": "string"
+          },
+          "ArrivalAirport": {
+            "$ref": "#/components/schemas/Airport"
+          },
+          "BookingClassAvail": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/BookingClassAvail"
+            }
+          },
+          "DateChangeNbr": {
+            "type": "boolean"
+          },
+          "StopQuantity": {
+            "type": "integer"
+          },
+          "GroundDuration": {
+            "type": "string"
+          },
+          "CodeshareInd": {
+            "type": "boolean"
+          },
+          "Equipment": {
+            "$ref": "#/components/schemas/Equipment"
+          },
+          "DepartureDateTime": {
+            "type": "string"
+          },
+          "ArrivalDateTime": {
+            "type": "string"
+          },
+          "FlightNumber": {
+            "type": "string"
+          },
+          "OperatingAirline": {
+            "$ref": "#/components/schemas/OperatingAirline"
+          },
+          "JourneyDuration": {
+            "type": "string"
+          }
+        }
+      },
+      "OriginDestinationOption": {
+        "type": "object",
+        "properties": {
+          "FlightSegment": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/FlightSegment"
+            }
+          }
+        }
+      },
+      "OriginDestinationOptions": {
+        "type": "object",
+        "properties": {
+          "OriginDestinationOption": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/OriginDestinationOption"
+            }
+          }
+        }
+      },
+      "OriginDestinationInformation": {
+        "type": "object",
+        "properties": {
+          "OriginLocation": {
+            "$ref": "#/components/schemas/Location"
+          },
+          "OriginDestinationOptions": {
+            "$ref": "#/components/schemas/OriginDestinationOptions"
+          },
+          "DepartureDateTime": {
+            "type": "string"
+          },
+          "ArrivalDateTime": {
+            "type": "string"
+          },
+          "RPH": {
+            "type": "string"
+          },
+          "DestinationLocation": {
+            "$ref": "#/components/schemas/Location"
+          }
+        }
+      },
+      "OTA_AirAvailRS": {
+        "type": "object",
+        "properties": {
+          "Comment": {
+            "type": "string"
+          },
+          "OriginDestinationInformation": {
+            "$ref": "#/components/schemas/OriginDestinationInformation"
+          },
+          "Version": {
+            "type": "string"
+          },
+          "Warnings": {
+            "$ref": "#/components/schemas/Warnings"
+          }
+        }
+      },
+      "createOTAAirRoute": {
+        "type": "object",
+        "properties": {
+          "extraOTAAvailabilityInfoListType": {
+            "$ref": "#/components/schemas/extraOTAAvailabilityInfoListType"
+          },
+          "OTA_AirAvailRS": {
+            "$ref": "#/components/schemas/OTA_AirAvailRS"
+          }
+        }
+      },
+      "availabilityOTAResponse": {
+        "type": "object",
+        "properties": {
+          "extraOTABrandInfoList": {
+            "$ref": "#/components/schemas/extraOTABrandInfoList"
+          },
+          "createOTAAirRoute": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/createOTAAirRoute"
+            }
+          },
+          "isMixCabin": {
+            "type": "boolean"
+          }
+        }
+      },
+      "duServiceOTAResponse": {
+        "type": "object",
+        "properties": {
+          "duBusiness": {
+            "type": "number"
+          },
+          "duCurrency": {
+            "type": "string"
+          },
+          "duEconomy": {
+            "type": "number"
+          }
+        }
+      },
+      "SUBERROR_ITEMS": {
+        "type": "object",
+        "properties": {
+          "NUMBER": {
+            "type": "integer"
+          },
+          "TYPE": {
+            "type": "integer"
+          }
+        }
+      },
+      "SUBERROR_LIST": {
+        "type": "object",
+        "properties": {
+          "SUBERROR_ITEMS": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/SUBERROR_ITEMS"
+            }
+          }
+        }
+      },
+      "LIST_MSG": {
+        "type": "object",
+        "properties": {
+          "NUMBER": {
+            "type": "integer"
+          },
+          "SUBERROR_LIST": {
+            "$ref": "#/components/schemas/SUBERROR_LIST"
+          },
+          "TEXT": {
+            "type": "string"
+          },
+          "TYPE": {
+            "type": "string"
+          },
+          "SUBERROR": {
+            "$ref": "#/components/schemas/SUBERROR_ITEMS"
+          }
+        }
+      },
+      "LIST_VALUE_TYPE": {
+        "type": "object",
+        "properties": {
+          "CODE": {
+            "type": "string"
+          }
+        }
+      },
+      "LIST_VALUE": {
+        "type": "object",
+        "properties": {
+          "VALUE": {
+            "type": "string"
+          },
+          "TYPE": {
+            "$ref": "#/components/schemas/LIST_VALUE_TYPE"
+          }
+        }
+      },
+      "LIST_FEE": {
+        "type": "object",
+        "properties": {
+          "LIST_VALUE": {
+            "$ref": "#/components/schemas/LIST_VALUE"
+          },
+          "TYPE": {
+            "$ref": "#/components/schemas/LIST_VALUE_TYPE"
+          }
+        }
+      },
+      "LIST_APPLICABLE_MARKUP_DISCOUNT": {
+        "type": "object",
+        "properties": {
+          "HIDE_FEE": {
+            "type": "boolean"
+          },
+          "LIST_VALUE": {
+            "$ref": "#/components/schemas/LIST_VALUE"
+          },
+          "TYPE": {
+            "$ref": "#/components/schemas/LIST_VALUE_TYPE"
+          }
+        }
+      },
+      "LIST_BOUND_PRICE": {
+        "type": "object",
+        "properties": {
+          "CURRENCY": {
+            "$ref": "#/components/schemas/CODENAME"
+          },
+          "AMOUNT": {
+            "type": "number"
+          },
+          "EXCHANGE_RATE": {
+            "type": "number"
+          },
+          "AMOUNT_WITHOUT_TAX": {
+            "type": "number"
+          },
+          "TAX": {
+            "type": "number"
+          },
+          "LIST_FEE": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/LIST_FEE"
+            }
+          },
+          "TOTAL_AMOUNT": {
+            "type": "number"
+          }
+        }
+      },
+      "AVAIL_DATE": {
+        "type": "object",
+        "properties": {
+          "code": {
+            "type": "string"
+          },
+          "content": {
+            "type": "string"
+          }
+        }
+      },
+      "LIST_AVAILABILITY_RANGE": {
+        "type": "object",
+        "properties": {
+          "LOCATION": {
+            "type": "string"
+          },
+          "MAX_AVAIL_DATE": {
+            "$ref": "#/components/schemas/AVAIL_DATE"
+          },
+          "MIN_AVAIL_DATE": {
+            "$ref": "#/components/schemas/AVAIL_DATE"
+          }
+        }
+      },
+      "LIST_DATE": {
+        "type": "object",
+        "properties": {
+          "DATE": {
+            "$ref": "#/components/schemas/AVAIL_DATE"
+          }
+        }
+      },
+      "CODENAME": {
+        "type": "object",
+        "properties": {
+          "CODE": {
+            "type": "string"
+          },
+          "NAME": {
+            "type": "string"
+          }
+        }
+      },
+      "LIST_PROPOSED_BOUND_LOCATION": {
+        "type": "object",
+        "properties": {
+          "CITY_CODE": {
+            "type": "string"
+          },
+          "LOCATION_CODE": {
+            "type": "string"
+          },
+          "CITY_NAME": {
+            "type": "string"
+          },
+          "COUNTRY_NAME": {
+            "type": "string"
+          },
+          "LOCATION_NAME": {
+            "type": "string"
+          },
+          "COUNTRY_CODE": {
+            "type": "string"
+          }
+        }
+      },
+      "LIST_PROPOSED_BOUND_LIST_SEGMENT": {
+        "type": "object",
+        "properties": {
+          "AIRLINE": {
+            "$ref": "#/components/schemas/CODENAME"
+          },
+          "SEGMENT_ID": {
+            "type": "string"
+          },
+          "B_DATE": {
+            "$ref": "#/components/schemas/AVAIL_DATE"
+          },
+          "E_DATE": {
+            "$ref": "#/components/schemas/AVAIL_DATE"
+          },
+          "EQUIPMENT": {
+            "$ref": "#/components/schemas/CODENAME"
+          },
+          "E_TICKETING": {
+            "type": "boolean"
+          },
+          "SEGMENT_FLIGHT_TIME": {
+            "type": "string"
+          },
+          "NUMBER_OF_STOPS": {
+            "type": "string"
+          },
+          "E_LOCATION": {
+            "$ref": "#/components/schemas/LIST_PROPOSED_BOUND_LOCATION"
+          },
+          "B_LOCATION": {
+            "$ref": "#/components/schemas/LIST_PROPOSED_BOUND_LOCATION"
+          },
+          "FLIGHT_NUMBER": {
+            "type": "string"
+          }
+        }
+      },
+      "LIST_PROPOSED_BOUND_LIST_FLIGHT": {
+        "type": "object",
+        "properties": {
+          "LIST_SEGMENT": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/LIST_PROPOSED_BOUND_LIST_SEGMENT"
+            }
+          },
+          "FLIGHT_ID": {
+            "type": "string"
+          }
+        }
+      },
+      "LIST_PROPOSED_BOUND": {
+        "type": "object",
+        "properties": {
+          "LIST_FLIGHT": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/LIST_PROPOSED_BOUND_LIST_FLIGHT"
+            }
+          }
+        }
+      },
+      "FARE_FAMILY": {
+        "type": "object",
+        "properties": {
+          "HIGHLIGHTING_COLOR": {
+            "type": "string"
+          },
+          "BRAND_NAME": {
+            "type": "string"
+          },
+          "COLOR": {
+            "type": "string"
+          },
+          "SHORT_NAME": {
+            "type": "string"
+          },
+          "COLOR_NAME": {
+            "type": "string"
+          },
+          "HIERARCHY": {
+            "type": "integer"
+          }
+        }
+      },
+      "LIST_BOUND_LSA_DEBUG_INFO": {
+        "type": "object",
+        "properties": {
+          "RBD": {
+            "type": "string"
+          },
+          "FIRST_FLIGHT_NUMBER": {
+            "type": "string"
+          }
+        }
+      },
+      "LIST_BOUND_LIST_FLIGHT": {
+        "type": "object",
+        "properties": {
+          "DISPLAY_LAST_SEATS": {
+            "type": "string"
+          },
+          "FLIGHT_ID": {
+            "type": "integer"
+          },
+          "NUMBER_OF_LAST_SEATS": {
+            "type": "integer"
+          },
+          "LSA_DEBUG_INFO": {
+            "$ref": "#/components/schemas/LIST_BOUND_LSA_DEBUG_INFO"
+          }
+        }
+      },
+      "LIST_BOUND": {
+        "type": "object",
+        "properties": {
+          "LIST_FLIGHT": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/LIST_BOUND_LIST_FLIGHT"
+            }
+          }
+        }
+      },
+      "LIST_TRIP_PRICE_LIST_DISPLAY_TAX": {
+        "type": "object",
+        "properties": {
+          "CODE": {
+            "type": "string"
+          },
+          "VALUE": {
+            "type": "number"
+          }
+        }
+      },
+      "LIST_TRIP_PRICE": {
+        "type": "object",
+        "properties": {
+          "CURRENCY": {
+            "$ref": "#/components/schemas/CODENAME"
+          },
+          "AMOUNT": {
+            "type": "number"
+          },
+          "EXCHANGE_RATE": {
+            "type": "number"
+          },
+          "LIST_DISPLAY_TAX": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/LIST_TRIP_PRICE_LIST_DISPLAY_TAX"
+            }
+          },
+          "LIST_FEE": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/LIST_FEE"
+            }
+          },
+          "LIST_BOUND_PRICE": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/LIST_BOUND_PRICE"
+            }
+          },
+          "AMOUNT_WITHOUT_TAX": {
+            "type": "number"
+          },
+          "TAX": {
+            "type": "number"
+          },
+          "TOTAL_AMOUNT": {
+            "type": "number"
+          }
+        }
+      },
+      "LIST_PTC_APPLIED": {
+        "type": "object",
+        "properties": {
+          "CODE": {
+            "type": "string"
+          }
+        }
+      },
+      "LIST_PNR_LIST_BOUND_LIST_SEGMENT": {
+        "type": "object",
+        "properties": {
+          "SEGMENT_ID": {
+            "type": "integer"
+          },
+          "FARE_FAMILY": {
+            "$ref": "#/components/schemas/FARE_FAMILY"
+          },
+          "LIST_PTC_APPLIED": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/LIST_PTC_APPLIED"
+            }
+          },
+          "FARE_CLASS": {
+            "type": "string"
+          },
+          "RBD": {
+            "type": "string"
+          },
+          "CABIN": {
+            "type": "string"
+          },
+          "LIST_FARE_TYPES": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/CODENAME"
+            }
+          }
+        }
+      },
+      "LIST_PNR_LIST_BOUND": {
+        "type": "object",
+        "properties": {
+          "LIST_SEGMENT": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/LIST_PNR_LIST_BOUND_LIST_SEGMENT"
+            }
+          }
+        }
+      },
+      "LIST_PNR_LIST_TRAVELLER": {
+        "type": "object",
+        "properties": {
+          "IS_PRIMARY_TRAVELLER": {
+            "type": "boolean"
+          },
+          "HAS_INFANT": {
+            "type": "boolean"
+          },
+          "REQUESTED_TRAVELLER_TYPE": {
+            "$ref": "#/components/schemas/CODENAME"
+          }
+        }
+      },
+      "LIST_PNR_LIST_TRAVELLER_TYPE": {
+        "type": "object",
+        "properties": {
+          "NUMBER": {
+            "type": "integer"
+          },
+          "LIST_TRAVELLER_TYPE_PRICE": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/LIST_TRIP_PRICE"
+            }
+          },
+          "TRAVELLER_TYPE": {
+            "$ref": "#/components/schemas/CODENAME"
+          },
+          "LIST_BOUND": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/LIST_PNR_LIST_BOUND"
+            }
+          },
+          "LIST_TRAVELLER_PRICE": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/LIST_TRIP_PRICE"
+            }
+          },
+          "LIST_TRAVELLER": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/LIST_PNR_LIST_TRAVELLER"
+            }
+          }
+        }
+      },
+      "LIST_PNR": {
+        "type": "object",
+        "properties": {
+          "LIST_TRAVELLER_TYPE": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/LIST_PNR_LIST_TRAVELLER_TYPE"
+            }
+          },
+          "LIST_PNR_PRICE": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/LIST_TRIP_PRICE"
+            }
+          },
+          "LIST_APPLICABLE_MARKUP_DISCOUNT": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/LIST_APPLICABLE_MARKUP_DISCOUNT"
+            }
+          }
+        }
+      },
+      "LIST_RECOMMENDATION": {
+        "type": "object",
+        "properties": {
+          "FARE_FAMILY": {
+            "$ref": "#/components/schemas/FARE_FAMILY"
+          },
+          "RECOMMENDATION_ID": {
+            "type": "integer"
+          },
+          "LIST_BOUND": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/LIST_BOUND"
+            }
+          },
+          "LIST_TRIP_PRICE": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/LIST_TRIP_PRICE"
+            }
+          },
+          "LIST_PNR": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/LIST_PNR"
+            }
+          }
+        }
+      },
+      "LIST_TAB": {
+        "type": "object",
+        "properties": {
+          "LIST_DATE": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/LIST_DATE"
+            }
+          },
+          "LIST_PROPOSED_BOUND": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/LIST_PROPOSED_BOUND"
+            }
+          },
+          "LIST_RECOMMENDATION": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/LIST_RECOMMENDATION"
+            }
+          }
+        }
+      },
+      "SEARCH_LIST_COMMERCIAL_FARE_FAMILY": {
+        "type": "object",
+        "properties": {
+          "CODE": {
+            "type": "string"
+          },
+          "SET_INDEX": {
+            "type": "string"
+          },
+          "PANEL_TYPE": {
+            "type": "string"
+          },
+          "NAME": {
+            "type": "string"
+          }
+        }
+      },
+      "SEARCH_LIST_DESTINATION": {
+        "type": "object",
+        "properties": {
+          "B_TIME_WINDOW": {
+            "type": "string"
+          },
+          "B_DATE": {
+            "$ref": "#/components/schemas/AVAIL_DATE"
+          },
+          "E_LOCATION": {
+            "$ref": "#/components/schemas/LIST_PROPOSED_BOUND_LOCATION"
+          },
+          "B_LOCATION": {
+            "$ref": "#/components/schemas/LIST_PROPOSED_BOUND_LOCATION"
+          }
+        }
+      },
+      "SEARCH_DATA": {
+        "type": "object",
+        "properties": {
+          "LIST_COMMERCIAL_FARE_FAMILY": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/SEARCH_LIST_COMMERCIAL_FARE_FAMILY"
+            }
+          },
+          "TRIP_TYPE": {
+            "type": "string"
+          },
+          "LIST_DESTINATION": {
+            "$ref": "#/components/schemas/SEARCH_LIST_DESTINATION"
+          },
+          "PRICING_TYPE": {
+            "type": "string"
+          },
+          "DISPLAY_TYPE": {
+            "type": "string"
+          }
+        }
+      },
+      "LIST_PANEL": {
+        "type": "object",
+        "properties": {
+          "LIST_TAB": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/LIST_TAB"
+            }
+          },
+          "LIST_PROPOSED_BOUND": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/LIST_PROPOSED_BOUND"
+            }
+          },
+          "SEARCH_DATA": {
+            "$ref": "#/components/schemas/SEARCH_DATA"
+          },
+          "IS_LOADED_FROM_CACHE": {
+            "type": "boolean"
+          },
+          "TYPE": {
+            "type": "string"
+          }
+        }
+      },
+      "FLOW_SIGNATURE": {
+        "type": "object",
+        "properties": {
+          "INITIAL_PRODUCT": {
+            "type": "string"
+          },
+          "TRANSACTION": {
+            "type": "string"
+          },
+          "BOOKING_TYPE": {
+            "type": "string"
+          }
+        }
+      },
+      "FARE_FAMILY_DICTIONARY_LIST_FARE_FAMILY": {
+        "type": "object",
+        "properties": {
+          "COMMERCIAL_FARE_FAMILY": {
+            "type": "string"
+          },
+          "FARE_FAMILY": {
+            "type": "string"
+          }
+        }
+      },
+      "FARE_FAMILY_DICTIONARY": {
+        "type": "object",
+        "properties": {
+          "LIST_FARE_FAMILY": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/FARE_FAMILY_DICTIONARY_LIST_FARE_FAMILY"
+            }
+          }
+        }
+      },
+      "flexPricerAvailabilityOutput": {
+        "type": "object",
+        "properties": {
+          "LIST_AVAILABILITY_RANGE": {
+            "$ref": "#/components/schemas/LIST_AVAILABILITY_RANGE"
+          },
+          "jSessionId": {
+            "type": "string"
+          },
+          "LIST_PANEL": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/LIST_PANEL"
+            }
+          },
+          "PAGE_TICKET": {
+            "type": "string"
+          },
+          "TEMPLATE": {
+            "type": "string"
+          },
+          "FLOW_SIGNATURE": {
+            "$ref": "#/components/schemas/FLOW_SIGNATURE"
+          },
+          "FARE_FAMILY_DICTIONARY": {
+            "$ref": "#/components/schemas/FARE_FAMILY_DICTIONARY"
+          },
+          "LIST_MSG": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/LIST_MSG"
+            }
+          }
+        }
+      },
+      "availabilityFlexPricerResponse": {
+        "type": "object",
+        "properties": {
+          "flexPricerAvailabilityOutput": {
+            "$ref": "#/components/schemas/flexPricerAvailabilityOutput"
+          },
+          "duServiceOTAResponse": {
+            "$ref": "#/components/schemas/duServiceOTAResponse"
+          }
+        }
+      },
+      "data": {
+        "type": "object",
+        "properties": {
+          "availabilityOTAResponse": {
+            "$ref": "#/components/schemas/availabilityOTAResponse"
+          },
+          "availabilityFlexPricerResponse": {
+            "$ref": "#/components/schemas/availabilityFlexPricerResponse"
+          }
+        }
+      },
+      "MessageInformation": {
+        "type": "object",
+        "required": [
+          "Code",
+          "Description"
+        ],
+        "properties": {
+          "Code": {
+            "description": "TK-OOOO",
+            "type": "string"
+          },
+          "Description": {
+            "description": "Request Processed Successfully.",
+            "type": "string"
+          }
+        }
+      },
+      "body": {
+        "type": "object",
+        "properties": {
+          "data": {
+            "$ref": "#/components/schemas/data"
+          },
+          "requestId": {
+            "type": "string"
+          },
+          "message": {
+            "$ref": "#/components/schemas/MessageInformation"
+          },
+          "status": {
+            "description": "SUCCESS",
+            "type": "string"
+          }
+        }
+      },
+      "ErrorResponseDetail": {
+        "type": "object",
+        "properties": {
+          "Status": {
+            "type": "integer",
+            "description": "Status code"
+          },
+          "Message": {
+            "type": "string",
+            "description": "Error message"
+          }
+        }
+      }
+    }
+  }
+}
