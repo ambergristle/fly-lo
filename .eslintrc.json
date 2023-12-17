@@ -1,0 +1,41 @@
+{
+  "root": true,
+  "extends": [
+    "eslint:recommended",
+    "plugin:svelte/recommended"
+  ],
+  "plugins": [
+    "unused-imports"
+  ],
+  "env": {
+    "browser": true,
+    "es2017": true,
+    "node": true
+  },
+  "parserOptions": {
+    "sourceType": "module",
+    "ecmaVersion": 2020,
+		"extraFileExtensions": [".svelte"]
+  },
+  "rules": {
+    "comma-dangle": ["warn", "always-multiline"],
+    "comma-spacing": ["warn", { "after": true }],
+    "eqeqeq": ["error", "always"],
+    "indent": ["warn", 2, { "SwitchCase": 2 }],
+    "key-spacing": ["warn", { "afterColon": true }],
+    "max-len": ["warn", { "code": 120 }],
+    "no-extra-boolean-cast": "off",
+    "no-nested-ternary": "error",
+    "no-multi-spaces": "warn",
+    // "no-redeclare": "off",
+    // "no-unused-vars": "off",
+    "object-curly-spacing": ["warn", "always"],
+    "quotes": ["warn", "single"],
+    "semi": ["error", "always"],
+    "space-in-parens": ["warn", "never"],
+    "spaced-comment": ["warn", "always", { "markers": ["/"] }],
+    "unused-imports/no-unused-imports": "warn",
+    "eol-last": 2
+  },
+  "overrides": []
+}
