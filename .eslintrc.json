@@ -2,9 +2,11 @@
   "root": true,
   "extends": [
     "eslint:recommended",
+    "plugin:@typescript-eslint/recommended",
     "plugin:svelte/recommended"
   ],
   "plugins": [
+    "@typescript-eslint",
     "unused-imports"
   ],
   "env": {
@@ -12,6 +14,7 @@
     "es2017": true,
     "node": true
   },
+  "parser": "@typescript-eslint/parser",
   "parserOptions": {
     "sourceType": "module",
     "ecmaVersion": 2020,
@@ -27,8 +30,11 @@
     "no-extra-boolean-cast": "off",
     "no-nested-ternary": "error",
     "no-multi-spaces": "warn",
-    // "no-redeclare": "off",
-    // "no-unused-vars": "off",
+    "no-redeclare": "off",
+    "@typescript-eslint/no-redeclare": ["error"],
+    "no-unused-vars": "off",
+    "@typescript-eslint/no-empty-interface": ["off"], 
+    "@typescript-eslint/no-unused-vars": ["warn", { "args": "after-used", "ignoreRestSiblings": true }],
     "object-curly-spacing": ["warn", "always"],
     "quotes": ["warn", "single"],
     "semi": ["error", "always"],
@@ -37,5 +43,37 @@
     "unused-imports/no-unused-imports": "warn",
     "eol-last": 2
   },
-  "overrides": []
+  "overrides": [
+    { 
+    "files": ["*.svelte"], 
+    "parser": "svelte-eslint-parser",
+    "parserOptions": {
+      "parser": "@typescript-eslint/parser"
+    },
+    "rules": {
+      "@typescript-eslint/no-unused-vars": [
+        "warn",
+        {
+          "argsIgnorePattern": "^_",
+          "varsIgnorePattern": "^\\$\\$(Props|Events|Slots|Generic)$"
+        }
+      ]
+    }
+    },
+    {
+			"files": ["*.ts"],
+			"parser": "@typescript-eslint/parser",
+			"rules": {
+				"@typescript-eslint/ban-types": [
+					"error",
+					{
+						"extendDefaults": true,
+						"types": {
+							"{}": false
+						}
+					}
+				]
+			}
+		}
+  ]
 }
