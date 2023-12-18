@@ -3,15 +3,18 @@ meta {
   type: http
   seq: 2
 }
+
 post {
-  url: {{KLM_BASE_URL}}/opendata/offers/{{KLM_VERSION}}/lowest-fares-by-destination
+  url: {{AFKLM_BASE_URL}}/opendata/offers/{{AFKLM_VERSION}}/lowest-fares-by-destination
   body: json
   auth: none
 }
+
 headers {
-  Api-Key: {{KLM_API_KEY}}
+  Api-Key: {{AFKLM_KEY}}
   AFKL-TRAVEL-Host: AF
 }
+
 body:json {
   {
     "origin": {

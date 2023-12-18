@@ -3,11 +3,13 @@ meta {
   type: http
   seq: 3
 }
+
 get {
-  url: {{KLM_BASE_URL}}/opendata/flightstatus
+  url: {{AFKLM_BASE_URL}}/opendata/flightstatus
   body: none
   auth: none
 }
+
 headers {
   Content-Type: application/x-www-form-urlencoded
   API-Key: {{KLM_API_KEY}}
