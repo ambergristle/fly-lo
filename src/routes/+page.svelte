@@ -57,9 +57,6 @@
       let:config
       class="flex flex-row items-center"
     >
-      <div class="text-lg font-semibold">
-        fly-lo
-      </div>
       <Field {config} name="origin">
         <FormItem>
           <Input placeholder="SFO"/>
