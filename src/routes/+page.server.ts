@@ -5,15 +5,15 @@ import type { Actions, PageServerLoad } from './$types';
 import { queryLowestFareOffers } from '$lib/afklm';
 import { QueryValues } from './schemas';
 
-export const load: PageServerLoad = async (event) => {
+export const load: PageServerLoad = async ({ request }) => {
   return {
-    query: await superValidate(event, QueryValues),
+    query: await superValidate(request, QueryValues),
   };
 };
 
 export const actions: Actions = {
-  default: async (event) => {
-    const query = await superValidate(event, QueryValues);
+  default: async ({ request }) => {
+    const query = await superValidate(request, QueryValues);
 
     if (!query.valid) {
       console.error(query.errors);
