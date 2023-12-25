@@ -1,7 +1,7 @@
 import wretch from 'wretch';
 import { z } from 'zod';
 
-import { AFKLM_BASE_URL, AFKLM_KEY } from '$env/static/private';
+import { env } from '$env/dynamic/private';
 
 const LowestFareOffersResponseSchema = z.object({
   connections: z.object({
@@ -41,10 +41,10 @@ const LowestFareOffersResponseSchema = z.object({
   }).array(),
 });
 
-const AFKLM = wretch(AFKLM_BASE_URL)
+const AFKLM = wretch(env.AFKLM_BASE_URL)
   .headers({
     'accept-language': 'en-US',
-    'api-key': AFKLM_KEY,
+    'api-key': env.AFKLM_KEY,
     'afkl-travel-host': 'AF',
   });
 
