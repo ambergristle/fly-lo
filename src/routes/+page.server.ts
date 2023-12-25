@@ -16,6 +16,8 @@ export const actions: Actions = {
     const query = await superValidate(event, QueryValues);
 
     if (!query.valid) {
+      console.error(query.errors);
+      console.info(query.data);
       return fail(400, { query });
     }
 
