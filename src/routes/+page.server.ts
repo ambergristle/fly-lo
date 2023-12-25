@@ -13,6 +13,8 @@ export const load: PageServerLoad = async ({ request }) => {
 
 export const actions: Actions = {
   default: async ({ request }) => {
+    console.log(await request.formData());
+
     const query = await superValidate(request, QueryValues);
 
     if (!query.valid) {
