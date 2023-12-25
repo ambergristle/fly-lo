@@ -1,6 +1,8 @@
 import wretch from 'wretch';
 import { z } from 'zod';
 
+import { AFKLM_BASE_URL, AFKLM_KEY } from '$env/static/private';
+
 enum Provider {
   AirFrance = 'AF',
   KLM = 'KLM',
@@ -67,10 +69,10 @@ const LowestFareOffersResponseSchema = z.object({
   }).array(),
 });
 
-const AFKLM = wretch(process.ENV.AFKLM_BASE_URL)
+const AFKLM = wretch(AFKLM_BASE_URL)
   .headers({
     'accept-language': 'en-US',
-    'api-key': process.env.AFKLM_KEY,
+    'api-key': AFKLM_KEY,
     'afkl-travel-host': 'AF',
   });
 
