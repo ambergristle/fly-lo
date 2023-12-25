@@ -1,45 +1,46 @@
-// import { fail } from '@sveltejs/kit';
+import { fail } from '@sveltejs/kit';
+import { superValidate } from 'sveltekit-superforms/server';
 import type { Actions, PageServerLoad } from './$types';
 
 import { queryLowestFareOffers } from '$lib/afklm';
+import { QueryValues } from './schemas';
 
-export const load: PageServerLoad = ({ url, route, params }) => {
-  console.log({ url, route, params });
-
+export const load: PageServerLoad = async (event) => {
   return {
-  //   offers: lowestFareOffers({
-  //     origin: 'SFO',
-  //     destination: 'ATH',
-  //     filter: {
-  //       fromDate: '2024-01-01',
-  //       toDate: '2024-12-31',
-  //       interval: 'DAY',
-  //     },
-  //     format: {
-  //       currency: 'USD',
-  //     },
-  //   }),
+    query: await superValidate(event, QueryValues),
   };
 };
 
 export const actions: Actions = {
   default: async (event) => {
-    const result = await queryLowestFareOffers({
-      origin: 'SFO',
-      destination: 'ATH',
+    const query = await superValidate(event, QueryValues);
+
+    if (!query.valid) {
+      return fail(400, { query });
+    }
+
+    const {
+      origin,
+      destination,
+      dateRange,
+    } = query.data;
+
+    const results = await queryLowestFareOffers({
+      origin,
+      destination,
       filter: {
-        fromDate: '2024-01-01',
-        toDate: '2024-12-31',
+        fromDate: dateRange.start,
+        toDate: dateRange.end,
         interval: 'DAY',
       },
       format: {
         currency: 'USD',
       },
     });
-
+    
     return {
-      success: true,
-      data: result,
+      query,
+      results,
     };
   },
 };
