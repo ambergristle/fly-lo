@@ -5,17 +5,17 @@ meta {
 }
 
 get {
-  url: {{AFKLM_BASE_URL}}/opendata/offers/{{AFKLM_VERSION}}/lowest-fare-offers?d=q0YZ-4OGJkr7rxrYXTKAluGg0hCoG2MULBpRGMViFrFgixDDNNW1GK3XWmztbIg2eL0N4WLvEUHksDe9qtFGZowMjEx0DSx0jYzh7elqyKhgsJs_rLKCx3stypAMVKEjMCAxFSIaQbGIShPqakhPLxYYdhj9zlioSZDsWwsAdbb6eec32ae&dateInterval=2023-12-16/2024-12-09
+  url: {{AFKLM_BASE_URL}}/opendata/offers/{{AFKLM_VERSION}}/lowest-fare-offers?d=q0YZ-4OGJkr7rxrYXTKAluGg0hBoAlDEEFkkFnNcLBpRPMViFrpgqzHasLXYWtsQpfDaG8LF3i-CyGFvgFVDm87VkAHAYDd_WL0Ej-JalNEXqEJHYJhhKkS0d2LRBpOMDIxMdA3MdQ0M9WFMY0OkShTqfkjPLxYYchj90FiodZDsXAsA0522b449ed1&dateInterval=2024-07-01/2024-07-30
   body: none
   auth: none
 }
 
 query {
-  d: q0YZ-4OGJkr7rxrYXTKAluGg0hCoG2MULBpRGMViFrFgixDDNNW1GK3XWmztbIg2eL0N4WLvEUHksDe9qtFGZowMjEx0DSx0jYzh7elqyKhgsJs_rLKCx3stypAMVKEjMCAxFSIaQbGIShPqakhPLxYYdhj9zlioSZDsWwsAdbb6eec32ae
-  dateInterval: 2023-12-16/2024-12-09
+  d: <D>
+  dateInterval: <FROM_DATE>/<TO_DATE>
 }
 
 headers {
-  Api-Key: {{KLM_API_KEY}}
-  AFKL-TRAVEL-Host: AF
+  api-key: {{AFKLM_KEY}}
+  afkl-travel-host: AF
 }

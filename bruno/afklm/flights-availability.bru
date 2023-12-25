@@ -1,0 +1,35 @@
+meta {
+  name: flights-availability
+  type: http
+  seq: 5
+}
+
+post {
+  url: {{AFKLM_BASE_URL}}/opendata/offers/{{AFKLM_VERSION}}/flights-availability
+  body: json
+  auth: none
+}
+
+headers {
+  api-key: {{AFKLM_KEY}}
+  afkl-travel-host: AF
+}
+
+body:json {
+  {
+    "bookingFlow": "REWARD",
+    "searchType": "AN",
+    "sortType": "NEUTRAL_ORDER",
+    "connection": {
+      "departureDate": "2024-07-23",
+      "origin": {
+        "type": "AIRPORT",
+        "code": "SFO"
+      },
+      "destination": {
+        "type": "AIRPORT",
+        "code": "ATH"
+      }
+    }
+  }
+}

@@ -1,11 +1,11 @@
 meta {
-  name: best-fare-offers
+  name: lowest-fare-offers
   type: http
-  seq: 1
+  seq: 9
 }
 
 post {
-  url: {{AFKLM_BASE_URL}}/opendata/offers/{{AFKLM_VERSION}}/best-fare-offers
+  url: {{AFKLM_BASE_URL}}/opendata/offers/a/{{AFKLM_VERSION}}/lowest-fare-offers
   body: json
   auth: none
 }
@@ -28,6 +28,7 @@ body:json {
       "type": "ADT"
     }],
     "requestedConnections": [{
+      "dateInterval": "2024-07-01/2024-07-31",
       "origin": {
         "type": "AIRPORT",
         "code": "SFO"
@@ -37,7 +38,7 @@ body:json {
         "code": "ATH"
       }
     }],
-    "commercialCabin": "BUSINESS",
-    "dateInterval": "2024-07-01/2024-07-31"
+    "type": "DAY",
+    "currency": "USD"
   }
 }
