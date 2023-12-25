@@ -5,11 +5,11 @@
   "license": "AGPL-3.0-or-later",
   "description": "A simple interface for querying selected airline offers",
   "private": true,
+  "main": "build/index.js",
   "scripts": {
     "dev": "vite dev",
     "build": "vite build",
     "preview": "vite preview",
-    "start": "npm run build/index.js",
     "check": "svelte-kit sync && svelte-check --tsconfig ./jsconfig.json",
     "check:watch": "svelte-kit sync && svelte-check --tsconfig ./jsconfig.json --watch",
     "lint": "eslint ."
