@@ -48,14 +48,14 @@
   let datePickerStartValue: DateValue | undefined = undefined;
 </script>
 
-<Card.Root>
-  <Card.Content class="grid gap-4">
+<Card.Root class="flex flex-row justify-center items-center">
+  <Card.Content class="pt-4">
     <Form
       schema={QueryValues}
       form={formProps}
       controlled
       let:config
-      class="flex flex-row items-center"
+      class="flex flex-row items-center gap-2"
     >
       <Field {config} name="origin">
         <FormItem>
