@@ -3,34 +3,6 @@ import { z } from 'zod';
 
 import { AFKLM_BASE_URL, AFKLM_KEY } from '$env/static/private';
 
-enum Provider {
-  AirFrance = 'AF',
-  KLM = 'KLM',
-  TurkishAir = 'TKA',
-}
-
-type OfferRow = {
-  origin: {
-    name: string;
-    code: string;
-  };
-  destination: {
-    name: string;
-    code: string;
-  };
-  // split somehow?
-  departsAt: Date;
-  arrivesAt: Date;
-  duration: number;
-  airline: Provider;
-  flightId: string; // number?
-  price: {
-    miles: number;
-    taxes: number;
-  }
-}
-
-type LowestFareOffersResponse = z.infer<typeof LowestFareOffersResponseSchema>;
 const LowestFareOffersResponseSchema = z.object({
   connections: z.object({
     id: z.number(),
@@ -139,7 +111,7 @@ export const queryLowestFareOffers = async (params: {
 }) => {
   const response = await lowestFareOffers(params);
   const connections = response.connections[0];
-  
+
   return response.recommendations
     .map((recommendation, index) => {
       const flightProduct = recommendation.flightProducts[0];
