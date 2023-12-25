@@ -4,7 +4,6 @@ import type { Writable } from 'svelte/store';
 import Item from './form-item.svelte';
 import Input from './form-input.svelte';
 import Description from './form-description.svelte';
-import Label from './form-label.svelte';
 import Validation from './form-validation.svelte';
 import Button from './form-button.svelte';
 
@@ -25,7 +24,6 @@ export {
   Control,
   Item,
   Input,
-  Label,
   Button,
   Validation,
   Description,
@@ -36,7 +34,6 @@ export {
   Item as FormItem,
   Input as FormInput,
   Description as FormDescription,
-  Label as FormLabel,
   Validation as FormValidation,
 
   Button as FormButton,
