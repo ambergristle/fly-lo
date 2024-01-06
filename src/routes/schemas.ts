@@ -1,21 +1,21 @@
 import { z } from 'zod';
 
-const AirportCode = z.string()
+const ZAirportCode = z.string()
   .trim()
   .regex(/[A-Za-z]{3}/)
   .toUpperCase();
 
-const DateString = z.string()
+const ZDateString = z.string()
   .regex(/\d{4}-\d{2}-\d{2}/)
   .refine((dateString) => {
     return !isNaN(new Date(dateString).getTime());
   });
 
-export const QueryValues = z.object({
-  origin: AirportCode,
-  destination: AirportCode,
+export const ZQueryValues = z.object({
+  origin: ZAirportCode,
+  destination: ZAirportCode,
   dateRange: z.object({
-    start: DateString,
-    end: DateString,
+    start: ZDateString,
+    end: ZDateString,
   }),
 });

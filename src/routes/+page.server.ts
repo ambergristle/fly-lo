@@ -4,17 +4,17 @@ import { superValidate } from 'sveltekit-superforms/server';
 import { queryLowestFareOffers } from '$lib/afklm';
 import { RateLimitError } from '$lib/errors';
 import type { Actions, PageServerLoad } from './$types';
-import { QueryValues } from './schemas';
+import { ZQueryValues } from './schemas';
 
 export const load: PageServerLoad = async ({ request }) => {
   return {
-    query: await superValidate(request, QueryValues),
+    query: await superValidate(request, ZQueryValues),
   };
 };
 
 export const actions: Actions = {
   default: async ({ request }) => {
-    const query = await superValidate(request, QueryValues);
+    const query = await superValidate(request, ZQueryValues);
 
     if (!query.valid) {
       console.error('Invalid Query: ', JSON.stringify(query.errors, null, 2));
