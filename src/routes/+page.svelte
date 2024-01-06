@@ -14,14 +14,14 @@
   } from 'lucide-svelte';
   
   import { page } from '$app/stores';
+  import { cn } from '$lib/utils/styles';
   import * as Alert from '$lib/components/alert';
   import { Button } from '$lib/components/button';
   import * as Form from '$lib/components/form';
   import * as Card from '$lib/components/card';
   import * as Popover from '$lib/components/popover';
   import { RangeCalendar } from '$lib/components/range-calendar';
-  import * as Table from '$lib/components/table';
-  import { cn } from '$lib/utils/styles';
+  import DataTable from './data-table.svelte';
   import type { PageData } from './$types';
   import { QueryValues } from './schemas';
     
@@ -46,11 +46,6 @@
     : undefined;
 
   let datePickerStartValue: DateValue | undefined = undefined;
-
-  const formatCurrency = new Intl.NumberFormat('en-US', {
-    style: 'currency',
-    currency: 'USD',
-  }).format;
 </script>
 
 {#if $page.form?.error}
@@ -140,48 +135,4 @@
     </Form.Root>
   </Card.Content>
 </Card.Root>
-
-<Table.Root>
-  <Table.Caption>
-  </Table.Caption>
-  <Table.Header>
-    <Table.Row>
-      <Table.Head>
-        Date
-      </Table.Head>
-      <Table.Head>
-        Duration (hrs)
-      </Table.Head>
-      <Table.Head>
-        Miles (k)
-      </Table.Head>
-      <Table.Head>
-        Taxes
-      </Table.Head>
-      <Table.Head>
-        Seats Available
-      </Table.Head>
-    </Table.Row>
-  </Table.Header>
-  <Table.Body>
-    {#each $page.form?.results ?? [] as offer}
-      <Table.Row>
-        <Table.Cell>
-          {offer.departureDate}
-        </Table.Cell>
-        <Table.Cell>
-          {offer.duration / 60}
-        </Table.Cell>
-        <Table.Cell>
-          {offer.miles / 1000}
-        </Table.Cell>
-        <Table.Cell>
-          {formatCurrency(offer.taxes)}
-        </Table.Cell>
-        <Table.Cell>
-          {offer.numberOfSeatsAvailable}
-        </Table.Cell>
-      </Table.Row>
-    {/each}
-  </Table.Body>
-</Table.Root>
+<DataTable data={$page.form?.results ?? []} />
