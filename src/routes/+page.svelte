@@ -35,12 +35,12 @@
     dataType: 'json',
   });
   
-  const { form: query, delayed } = formProps;
+  const { form, delayed } = formProps;
 
-  let datePickerValue = $query.dateRange
+  let datePickerValue = $form.dateRange
     ? {
-      start: $query.dateRange.start ? parseDate($query.dateRange.start) : undefined,
-      end: $query.dateRange.end ? parseDate($query.dateRange.end) : undefined,
+      start: $form.dateRange.start ? parseDate($form.dateRange.start) : undefined,
+      end: $form.dateRange.end ? parseDate($form.dateRange.end) : undefined,
     }
     : undefined;
 
@@ -117,11 +117,11 @@
             placeholder={datePickerValue?.start}
             minValue={today(getLocalTimeZone())}
             onValueChange={(v) => {
-              $query.dateRange.start = v.start
+              $form.dateRange.start = v.start
                 ? v.start.toString()
                 : '';
                 
-              $query.dateRange.end = v.end
+              $form.dateRange.end = v.end
                 ? v.end.toString()
                 : '';
             }}
