@@ -8,19 +8,19 @@ import { QueryValues } from './schemas';
 
 export const load: PageServerLoad = async ({ request }) => {
   return {
-    form: await superValidate(request, QueryValues),
+    query: await superValidate(request, QueryValues),
   };
 };
 
 export const actions: Actions = {
   default: async ({ request }) => {
-    const form = await superValidate(request, QueryValues);
+    const query = await superValidate(request, QueryValues);
 
-    if (!form.valid) {
-      console.error('Invalid Query: ', JSON.stringify(form.errors, null, 2));
+    if (!query.valid) {
+      console.error('Invalid Query: ', JSON.stringify(query.errors, null, 2));
 
       return fail(400, { 
-        form, 
+        query, 
       });
     }
 
@@ -28,9 +28,11 @@ export const actions: Actions = {
       origin,
       destination,
       dateRange,
-    } = form.data;
+    } = query.data;
 
     try {
+      const val = true;
+      if (val) throw new RateLimitError(3400);
 
       const results = await queryLowestFareOffers({
         origin,
@@ -46,7 +48,7 @@ export const actions: Actions = {
       });
   
       return {
-        form,
+        query,
         results,
       };
 
@@ -55,7 +57,7 @@ export const actions: Actions = {
 
       if (error instanceof RateLimitError) {
         return fail(error.status, { 
-          form,
+          query,
           error: error.json,
         });
       }

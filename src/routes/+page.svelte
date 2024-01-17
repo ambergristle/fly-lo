@@ -31,7 +31,7 @@
     dateStyle: 'long',
   });
 
-  const formProps = superForm(data.form, {
+  const formProps = superForm(data.query, {
     dataType: 'json',
   });
   
