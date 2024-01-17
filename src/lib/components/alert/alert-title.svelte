@@ -2,7 +2,7 @@
 	import type { HTMLAttributes } from 'svelte/elements';
   
 	import { cn } from '$lib/utils/styles';
-	import type { HeadingLevel } from '.';
+	import type { HeadingLevel } from './';
 
 	type $$Props = HTMLAttributes<HTMLHeadingElement> & {
 		level?: HeadingLevel;
