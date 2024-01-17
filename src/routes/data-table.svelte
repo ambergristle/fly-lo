@@ -26,7 +26,7 @@
     }),
     table.column({
       accessor: 'duration',
-      header: 'Duration',
+      header: 'Duration (hrs)',
       cell: ({ value }) => {
         return isNumber(value) 
           ? value / 60 
