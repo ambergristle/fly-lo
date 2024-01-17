@@ -13,18 +13,17 @@
     Search as SearchIcon, 
   } from 'lucide-svelte';
   
-  import { cn } from '$lib/utils/styles';
-
+  import { page } from '$app/stores';
+  import * as Alert from '$lib/components/alert';
   import { Button } from '$lib/components/button';
   import { Field, Form, FormButton, FormItem, Input } from '$lib/components/form';
   import * as Card from '$lib/components/card';
   import * as Popover from '$lib/components/popover';
   import { RangeCalendar } from '$lib/components/range-calendar';
   import * as Table from '$lib/components/table';
+  import { cn } from '$lib/utils/styles';
   import type { PageData } from './$types';
-  
   import { QueryValues } from './schemas';
-    import { page } from '$app/stores';
     
   export let data: PageData;
 
@@ -36,7 +35,7 @@
     dataType: 'json',
   });
   
-  const { form, errors, delayed, enhance } = formProps;
+  const { form, delayed } = formProps;
 
   let datePickerValue = $form.dateRange
     ? {
@@ -46,7 +45,23 @@
     : undefined;
 
   let datePickerStartValue: DateValue | undefined = undefined;
+
+  const formatCurrency = new Intl.NumberFormat('en-US', {
+    style: 'currency',
+    currency: 'USD',
+  }).format;
 </script>
+
+{#if $page.form?.error}
+  <Alert.Root variant="destructive">
+    <Alert.Title>
+      {`Error: ${$page.form.error.message}`}
+    </Alert.Title>
+    <Alert.Description>
+      {$page.form.error.helperText}
+    </Alert.Description>
+  </Alert.Root>
+{/if}
 
 <Card.Root class="flex flex-row justify-center items-center">
   <Card.Content class="pt-4">
@@ -157,10 +172,10 @@
           {offer.duration}
         </Table.Cell>
         <Table.Cell>
-          {offer.miles}
+          {`${offer.miles / 1000}k`}
         </Table.Cell>
         <Table.Cell>
-          {offer.taxes}
+          {formatCurrency(offer.taxes)}
         </Table.Cell>
         <Table.Cell>
           {offer.numberOfSeatsAvailable}

@@ -2,6 +2,7 @@ import wretch from 'wretch';
 import { z } from 'zod';
 
 import { env } from '$env/dynamic/private';
+import { RateLimitError } from '$lib/errors';
 
 const LowestFareOffersResponseSchema = z.object({
   connections: z.object({
@@ -93,6 +94,15 @@ export const lowestFareOffers = async ({
       }],
       'type': filter.interval,
       'currency': format.currency,
+    })
+    .error(403, (error) => {
+      const headers = error.response.headers;
+      if (headers.get('x-mashery-error-code') === 'ERR_403_DEVELOPER_OVER_RATE') {
+        const retryAfterSeconds = Number(headers.get('retry-after'));
+        throw new RateLimitError(retryAfterSeconds);
+      }
+
+      throw error;
     })
     .json(LowestFareOffersResponseSchema.parse);
 };
