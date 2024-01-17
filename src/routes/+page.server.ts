@@ -31,9 +31,7 @@ export const actions: Actions = {
     } = query.data;
 
     try {
-      const val = true;
-      if (val) throw new RateLimitError(3400);
-
+      
       const results = await queryLowestFareOffers({
         origin,
         destination,
