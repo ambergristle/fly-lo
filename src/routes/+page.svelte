@@ -13,18 +13,17 @@
     Search as SearchIcon, 
   } from 'lucide-svelte';
   
-  import { cn } from '$lib/utils/styles';
-
+  import { page } from '$app/stores';
+  import * as Alert from '$lib/components/alert';
   import { Button } from '$lib/components/button';
   import { Field, Form, FormButton, FormItem, Input } from '$lib/components/form';
   import * as Card from '$lib/components/card';
   import * as Popover from '$lib/components/popover';
   import { RangeCalendar } from '$lib/components/range-calendar';
   import * as Table from '$lib/components/table';
+  import { cn } from '$lib/utils/styles';
   import type { PageData } from './$types';
-  
   import { QueryValues } from './schemas';
-    import { page } from '$app/stores';
     
   export let data: PageData;
 
@@ -32,21 +31,32 @@
     dateStyle: 'long',
   });
 
-  const formProps = superForm(data.query, {
+  const formProps = superForm(data.form, {
     dataType: 'json',
   });
   
-  const { form, errors, delayed, enhance } = formProps;
+  const { form: query, delayed } = formProps;
 
-  let datePickerValue = $form.dateRange
+  let datePickerValue = $query.dateRange
     ? {
-      start: $form.dateRange.start ? parseDate($form.dateRange.start) : undefined,
-      end: $form.dateRange.end ? parseDate($form.dateRange.end) : undefined,
+      start: $query.dateRange.start ? parseDate($query.dateRange.start) : undefined,
+      end: $query.dateRange.end ? parseDate($query.dateRange.end) : undefined,
     }
     : undefined;
 
   let datePickerStartValue: DateValue | undefined = undefined;
 </script>
+
+{#if $page.form?.error}
+  <Alert.Root variant="destructive">
+    <Alert.Title>
+      {`Error: ${$page.form.error.message}`}
+    </Alert.Title>
+    <Alert.Description>
+      {$page.form.error.helperText}
+    </Alert.Description>
+  </Alert.Root>
+{/if}
 
 <Card.Root class="flex flex-row justify-center items-center">
   <Card.Content class="pt-4">
@@ -102,11 +112,11 @@
             placeholder={datePickerValue?.start}
             minValue={today(getLocalTimeZone())}
             onValueChange={(v) => {
-              $form.dateRange.start = v.start
+              $query.dateRange.start = v.start
                 ? v.start.toString()
                 : '';
                 
-              $form.dateRange.end = v.end
+              $query.dateRange.end = v.end
                 ? v.end.toString()
                 : '';
             }}

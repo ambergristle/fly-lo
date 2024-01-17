@@ -1,47 +1,68 @@
 import { fail } from '@sveltejs/kit';
 import { superValidate } from 'sveltekit-superforms/server';
-import type { Actions, PageServerLoad } from './$types';
 
 import { queryLowestFareOffers } from '$lib/afklm';
+import { RateLimitError } from '$lib/errors';
+import type { Actions, PageServerLoad } from './$types';
 import { QueryValues } from './schemas';
 
 export const load: PageServerLoad = async ({ request }) => {
   return {
-    query: await superValidate(request, QueryValues),
+    form: await superValidate(request, QueryValues),
   };
 };
 
 export const actions: Actions = {
   default: async ({ request }) => {
-    const query = await superValidate(request, QueryValues);
+    const form = await superValidate(request, QueryValues);
 
-    if (!query.valid) {
-      console.error('Invalid Query: ', JSON.stringify(query.errors, null, 2));
-      return fail(400, { query });
+    if (!form.valid) {
+      console.error('Invalid Query: ', JSON.stringify(form.errors, null, 2));
+
+      return fail(400, { 
+        form, 
+      });
     }
 
     const {
       origin,
       destination,
       dateRange,
-    } = query.data;
+    } = form.data;
 
-    const results = await queryLowestFareOffers({
-      origin,
-      destination,
-      filter: {
-        fromDate: dateRange.start,
-        toDate: dateRange.end,
-        interval: 'DAY',
-      },
-      format: {
-        currency: 'USD',
-      },
-    });
-    
-    return {
-      query,
-      results,
-    };
+    try {
+
+      const results = await queryLowestFareOffers({
+        origin,
+        destination,
+        filter: {
+          fromDate: dateRange.start,
+          toDate: dateRange.end,
+          interval: 'DAY',
+        },
+        format: {
+          currency: 'USD',
+        },
+      });
+  
+      return {
+        form,
+        results,
+      };
+
+    } catch (error) {
+      console.error(error);
+
+      if (error instanceof RateLimitError) {
+        return fail(error.status, { 
+          form,
+          error: error.json,
+        });
+      }
+
+      return fail(500, { 
+        success: false,
+      });
+    }
   },
 };
