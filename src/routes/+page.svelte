@@ -16,7 +16,7 @@
   import { page } from '$app/stores';
   import * as Alert from '$lib/components/alert';
   import { Button } from '$lib/components/button';
-  import { Field, Form, FormButton, FormItem, Input } from '$lib/components/form';
+  import * as Form from '$lib/components/form';
   import * as Card from '$lib/components/card';
   import * as Popover from '$lib/components/popover';
   import { RangeCalendar } from '$lib/components/range-calendar';
@@ -35,6 +35,7 @@
     dataType: 'json',
   });
   
+  // use submitting instead? delay is a bit much
   const { form, delayed } = formProps;
 
   let datePickerValue = $form.dateRange
@@ -65,23 +66,23 @@
 
 <Card.Root class="flex flex-row justify-center items-center">
   <Card.Content class="pt-4">
-    <Form
+    <Form.Root
       schema={QueryValues}
       form={formProps}
       controlled
       let:config
       class="flex flex-row items-center gap-2"
     >
-      <Field {config} name="origin">
-        <FormItem>
-          <Input placeholder="SFO"/>
-        </FormItem>
-      </Field>
-      <Field {config} name="destination">
-        <FormItem>
-          <Input placeholder="ATH"/>
-        </FormItem>
-      </Field>
+      <Form.Field {config} name="origin">
+        <Form.Item>
+          <Form.Input placeholder="SFO"/>
+        </Form.Item>
+      </Form.Field>
+      <Form.Field {config} name="destination">
+        <Form.Item>
+          <Form.Input placeholder="ATH"/>
+        </Form.Item>
+      </Form.Field>
       <Popover.Root openFocus>
         <Popover.Trigger asChild let:builder>
           <Button
@@ -128,15 +129,15 @@
           />
         </Popover.Content>
       </Popover.Root>
-      <FormButton>
+      <Form.Button>
         {#if $delayed}
           <LoadingIcon class="mr-2 h-4 w-4 animate-spin" />
         {:else}
           <SearchIcon class="mr-2 h-4 w-4" />
         {/if}
         Search
-      </FormButton>
-    </Form>
+      </Form.Button>
+    </Form.Root>
   </Card.Content>
 </Card.Root>
 
@@ -149,10 +150,10 @@
         Date
       </Table.Head>
       <Table.Head>
-        Duration
+        Duration (hrs)
       </Table.Head>
       <Table.Head>
-        Miles
+        Miles (k)
       </Table.Head>
       <Table.Head>
         Taxes
@@ -169,10 +170,10 @@
           {offer.departureDate}
         </Table.Cell>
         <Table.Cell>
-          {offer.duration}
+          {offer.duration / 60}
         </Table.Cell>
         <Table.Cell>
-          {`${offer.miles / 1000}k`}
+          {offer.miles / 1000}
         </Table.Cell>
         <Table.Cell>
           {formatCurrency(offer.taxes)}
