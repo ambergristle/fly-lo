@@ -45,6 +45,11 @@
     : undefined;
 
   let datePickerStartValue: DateValue | undefined = undefined;
+
+  const formatCurrency = new Intl.NumberFormat('en-US', {
+    style: 'currency',
+    currency: 'USD',
+  }).format;
 </script>
 
 {#if $page.form?.error}
@@ -167,10 +172,10 @@
           {offer.duration}
         </Table.Cell>
         <Table.Cell>
-          {offer.miles}
+          {`${offer.miles / 1000}k`}
         </Table.Cell>
         <Table.Cell>
-          {offer.taxes}
+          {formatCurrency(offer.taxes)}
         </Table.Cell>
         <Table.Cell>
           {offer.numberOfSeatsAvailable}
