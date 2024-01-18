@@ -1,8 +1,8 @@
 
 <script lang="ts">
-  import { readable } from 'svelte/store';
+  import { writable } from 'svelte/store';
   import { Render, Subscribe, createTable } from 'svelte-headless-table';
-  import { addSortBy, addTableFilter } from 'svelte-headless-table/plugins';
+  import { addSortBy } from 'svelte-headless-table/plugins';
   import { ArrowUpDown as SortIcon } from 'lucide-svelte';
 
   import * as Table from '$lib/components/table';
@@ -11,12 +11,14 @@
   import { Button } from '$lib/components/button';
   import type { BestOfferItem } from '../types';
 
-  export let data: BestOfferItem[];
+  export let results: BestOfferItem[] = [];
 
-  const table = createTable(readable(data), {
-    sort: addSortBy({}), // default?
-    filter: addTableFilter(), // config?
-    // page?
+  const store = writable(results);
+
+  $: store.set(results ?? []);
+
+  const table = createTable(store, {
+    sort: addSortBy(),
   });
 
   const columns = table.createColumns([
@@ -61,14 +63,13 @@
 
   const { 
     headerRows,
-    pageRows,
+    rows,
     tableAttrs,
     tableBodyAttrs,
     pluginStates,
   } = table.createViewModel(columns);
 
   const { sortKeys } = pluginStates.sort;
-  const { filterValue } = pluginStates.filter;
 </script>
 
 <Table.Root {...$tableAttrs}>
@@ -83,10 +84,7 @@
               props={cell.props()}
               let:props
             >
-              <Table.Head 
-                {...attrs}
-                class={cn('[&:has([role=checkbox])]:pl-3')}
-              >
+              <Table.Head {...attrs}>
                 <!-- what is cond? -->
                 <!-- probably not going to do this here regardless -->
                 {#if true}
@@ -109,8 +107,8 @@
       </Subscribe>
     {/each}
   </Table.Header>
-  <Table.Body {...tableBodyAttrs}>
-    {#each $pageRows as row (row.id)}
+  <Table.Body {...$tableBodyAttrs}>
+    {#each $rows as row (row.id)}
       <Subscribe
         rowAttrs={row.attrs()}
         let:rowAttrs
