@@ -14,7 +14,9 @@
     Search as SearchIcon, 
   } from 'lucide-svelte';
   
+  import { page } from '$app/stores';
   import { cn } from '$lib/utils/styles';
+  import * as Alert from '$lib/components/alert';
   import { Button } from '$lib/components/button';
   import { Field, Form, FormButton, FormItem, Input } from '$lib/components/form';
   import * as Card from '$lib/components/card';
@@ -43,6 +45,17 @@
 
   let datePickerStartValue: DateValue | undefined = undefined;
 </script>
+
+{#if $page.form?.error}
+<Alert.Root variant="destructive">
+  <Alert.Title>
+    {`Error: ${$page.form.error.message}`}
+  </Alert.Title>
+  <Alert.Description>
+    {$page.form.error.helperText}
+  </Alert.Description>
+</Alert.Root>
+{/if}
 
 <Card.Root class="flex flex-row justify-center items-center">
   <Card.Content class="pt-4">
