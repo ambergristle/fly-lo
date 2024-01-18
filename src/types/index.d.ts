@@ -14,5 +14,5 @@ export type BestOfferItem = {
   miles: number;
   taxes: number;
   numberOfSeatsAvailable: number;
-  offers: string;
+  offers: string | undefined;
 }
