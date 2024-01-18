@@ -4,6 +4,8 @@
   import { Render, Subscribe, createTable } from 'svelte-headless-table';
   import { addSortBy } from 'svelte-headless-table/plugins';
   import { ArrowUpDown as SortIcon } from 'lucide-svelte';
+  import { ArrowUpAZ as SortAscendingIcon } from 'lucide-svelte';
+  import { ArrowDownZA as SortDescendingIcon } from 'lucide-svelte';
 
   import * as Table from '$lib/components/table';
   import { cn } from '$lib/utils/styles';
@@ -54,6 +56,9 @@
           currency: 'USD',
         }).format(value);
       },
+      plugins: {
+        sort: { disable: true },
+      },
     }),
     table.column({
       accessor: 'numberOfSeatsAvailable',
@@ -85,17 +90,32 @@
               let:props
             >
               <Table.Head {...attrs}>
-                <!-- what is cond? -->
-                <!-- probably not going to do this here regardless -->
-                {#if true}
+                {#if !props.sort.disabled}
                   <Button variant="ghost" on:click={props.sort.toggle}>
                     <Render of={cell.render()}/>
-                    <SortIcon
-                      class={cn(
-                        $sortKeys[0]?.id === cell.id && 'text-foreground',
-                        'ml-2 h-4 w-4',
-                      )}
-                    />
+                    <!-- streamline icon; style on full arr inclusion? -->
+                    {#if props.sort.order === 'asc'}
+                      <SortAscendingIcon
+                        class={cn(
+                          $sortKeys[0]?.id === cell.id && 'text-foreground',
+                          'ml-2 h-4 w-4',
+                        )}
+                      />
+                    {:else if props.sort.order === 'desc'}
+                      <SortDescendingIcon
+                        class={cn(
+                          $sortKeys[0]?.id === cell.id && 'text-foreground',
+                          'ml-2 h-4 w-4',
+                        )}
+                      />
+                    {:else}
+                      <SortIcon
+                        class={cn(
+                          $sortKeys[0]?.id === cell.id && 'text-foreground',
+                          'ml-2 h-4 w-4',
+                        )}
+                      />
+                    {/if}
                   </Button>
                 {:else}
                   <Render of={cell.render()}/>
