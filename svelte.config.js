@@ -11,6 +11,7 @@ const config = {
     alias: {
       $lib: './src/lib',
       $utils: './src/utils',
+      $types: './src/types',
     },
   },
   // Consult https://kit.svelte.dev/docs/integrations#preprocessors
