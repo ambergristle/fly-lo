@@ -50,9 +50,7 @@
       </Card.Content>
     </Form.Root>
   </Card.Root>
-  {#await data.data}
-    Loading
-  {:then response}
+  {#await data.data then response}
     {#if response}
       <DataTable
         summary={response.summary}
