@@ -19,3 +19,10 @@ export const ZQueryValues = z.object({
     end: ZDateString,
   }),
 });
+
+export const ZQueryParams = z.object({
+  origin: ZAirportCode,
+  destination: ZAirportCode,
+  start: ZDateString,
+  end: ZDateString,
+});
