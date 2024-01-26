@@ -3,6 +3,7 @@ import { z } from 'zod';
 
 import { env } from '$env/dynamic/private';
 import { RateLimitError } from '$lib/errors';
+import type { BestOfferSummary } from '$types';
 
 const LowestFareOffersResponseSchema = z.object({
   connections: z.object({
@@ -122,7 +123,12 @@ export const queryLowestFareOffers = async (params: {
   const response = await lowestFareOffers(params);
   const connections = response.connections[0];
 
-  return response.recommendations
+  const summary: BestOfferSummary = {
+    min: null,
+    max: null,
+  };
+
+  const results = response.recommendations
     .map((recommendation, index) => {
       const flightProduct = recommendation.flightProducts[0];
       const c = flightProduct.connections[0];
@@ -130,16 +136,31 @@ export const queryLowestFareOffers = async (params: {
       const connection = connections[index];
       if (connection.id !== c.connectionId) throw new Error('Failed to match connection: Invalid ID');
 
+      const miles = flightProduct.priceInMiles.totalPrice;
+
+      if (summary.min === null || miles < summary.min) {
+        summary.min = miles;
+      }
+
+      if (summary.max === null || miles > summary.max) {
+        summary.max = miles;
+      }
+
       return {
         origin: connection.origin.code,
         destination: connection.origin.code,
         commercialCabin: c.commercialCabin,
         departureDate: connection.departureDate,
         duration: connection.duration,
-        miles: flightProduct.priceInMiles.totalPrice,
+        miles,
         taxes: flightProduct.taxDetails.totalPrice,
         numberOfSeatsAvailable: c.numberOfSeatsAvailable,
         offers: c._links.availableOffers?.href,
       };
     });
+
+  return {
+    summary,
+    results,
+  };
 };

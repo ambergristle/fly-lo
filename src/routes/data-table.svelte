@@ -1,25 +1,27 @@
 
 <script lang="ts">
-  import { writable } from 'svelte/store';
+
+  import { readable } from 'svelte/store';
   import { Render, Subscribe, createTable } from 'svelte-headless-table';
-  import { addSortBy } from 'svelte-headless-table/plugins';
+  import { addColumnFilters, addSortBy } from 'svelte-headless-table/plugins';
+  import { keyed } from 'svelte-keyed';
   import { ArrowUpDown as SortIcon } from 'lucide-svelte';
   import { ArrowUpAZ as SortAscendingIcon } from 'lucide-svelte';
   import { ArrowDownZA as SortDescendingIcon } from 'lucide-svelte';
 
+  import { Button } from '$lib/components/button';
   import * as Table from '$lib/components/table';
+  import { Slider } from '$lib/components/slider';
+  import { minFilter } from '$lib/components/table/filters';
   import { cn } from '$lib/utils/styles';
   import { isNumber } from '$lib/utils/types';
-  import { Button } from '$lib/components/button';
-  import type { BestOfferItem } from '../types';
+  import type { BestOfferItem, BestOfferSummary } from '../types';
 
   export let results: BestOfferItem[] = [];
+  export let summary: BestOfferSummary | undefined;
 
-  const store = writable(results);
-
-  $: store.set(results ?? []);
-
-  const table = createTable(store, {
+  const table = createTable(readable(results), {
+    filter: addColumnFilters(),
     sort: addSortBy(),
   });
 
@@ -33,7 +35,7 @@
       header: 'Duration (hrs)',
       cell: ({ value }) => {
         return isNumber(value) 
-          ? value / 60 
+          ? (value / 60).toFixed(1) 
           : 'ERR';
       },
     }),
@@ -44,6 +46,12 @@
         return isNumber(value)
           ? value / 1000
           : 'ERR';
+      },
+      plugins: {
+        filter: {
+          fn: minFilter,
+          initialFilterValue: summary?.max ?? 0,
+        },
       },
     }),
     table.column({
@@ -74,14 +82,37 @@
     pluginStates,
   } = table.createViewModel(columns);
 
+  const { filterValues } = pluginStates.filter;
+  const milesFilter = keyed(filterValues, 'miles');
+
+  $: filterValue = [$milesFilter ?? 0];
+  $: milesFilter.set(filterValue[0]);
+
+  $: min = summary?.min ?? 0;
+  $: max = summary?.max ?? 0;
+
   const { sortKeys } = pluginStates.sort;
+
 </script>
+
+<div class="m-4">
+  <Slider 
+    bind:value={filterValue}
+    min={min}
+    max={max}
+    step={10000}
+  />
+</div>
 
 <Table.Root {...$tableAttrs}>
   <Table.Header>
     {#each $headerRows as headerRow (headerRow.id)}
-      <Subscribe rowAttrs={headerRow.attrs()}>
-        <Table.Row>
+      <Subscribe 
+        rowAttrs={headerRow.attrs()} 
+        rowProps={headerRow.props()} 
+        let:rowProps
+      >
+        <Table.Row {...rowProps}>
           {#each headerRow.cells as cell (cell.id)}
             <Subscribe 
               attrs={cell.attrs()}

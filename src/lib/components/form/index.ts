@@ -7,6 +7,7 @@ import Description from './form-description.svelte';
 import Validation from './form-validation.svelte';
 import Button from './form-button.svelte';
 import Label from './form-label.svelte';
+import RangeCalendar from './form-range-calendar.svelte';
 
 const Root = FormPrimitive.Root;
 const Field = FormPrimitive.Field;
@@ -29,6 +30,7 @@ export {
   Validation,
   Description,
   Label,
+  RangeCalendar,
   //
   Root as Form,
   Field as FormField,

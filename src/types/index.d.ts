@@ -16,3 +16,8 @@ export type BestOfferItem = {
   numberOfSeatsAvailable: number;
   offers: string | undefined;
 }
+
+export type BestOfferSummary = {
+  min: null | number;
+  max: null | number;
+}
