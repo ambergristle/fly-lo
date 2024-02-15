@@ -1,14 +1,9 @@
 import { fail, redirect } from '@sveltejs/kit';
 import { superValidate } from 'sveltekit-superforms/server';
 
-import type { Actions, PageServerLoad } from './$types';
-
-import { queryLowestFareOffers } from '$lib/afklm';
+import { getSearchParam } from '$lib/utils';
 import { ZQueryValues } from './schemas';
-
-const getSearchParam = (url: URL, key: string) => {
-  return url.searchParams.get(key) ?? '';
-};
+import type { Actions, PageServerLoad } from './$types';
 
 export const load: PageServerLoad = async ({ url }) => {
 
@@ -23,29 +18,7 @@ export const load: PageServerLoad = async ({ url }) => {
 
   const form = await superValidate(query, ZQueryValues);
 
-  if (!form.valid) {
-    return { form };
-  }
-  
-  const { origin, destination, dateRange } = form.data;
-
-  const data = queryLowestFareOffers({
-    origin,
-    destination,
-    filter: {
-      fromDate: dateRange.start,
-      toDate: dateRange.end,
-      interval: 'DAY',
-    },
-    format: {
-      currency: 'USD',
-    },
-  });
-
-  return {
-    form,
-    data,
-  };
+  return { form };
 };
 
 export const actions: Actions = {
