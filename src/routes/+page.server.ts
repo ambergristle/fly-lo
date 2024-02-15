@@ -6,14 +6,18 @@ import type { Actions, PageServerLoad } from './$types';
 import { queryLowestFareOffers } from '$lib/afklm';
 import { ZQueryValues } from './schemas';
 
+const getSearchParam = (url: URL, key: string) => {
+  return url.searchParams.get(key) ?? '';
+};
+
 export const load: PageServerLoad = async ({ url }) => {
 
   const query = {
-    origin: url.searchParams.get('origin') ?? '',
-    destination: url.searchParams.get('destination') ?? '',
+    origin: getSearchParam(url, 'origin'),
+    destination: getSearchParam(url, 'destination'),
     dateRange: {
-      start: url.searchParams.get('start') ?? '',
-      end: url.searchParams.get('end') ?? '',
+      start: getSearchParam(url, 'start'),
+      end: getSearchParam(url, 'end'),
     },
   };
 
