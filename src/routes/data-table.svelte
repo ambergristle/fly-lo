@@ -17,8 +17,15 @@
   import { isNumber } from '$lib/utils/types';
   import type { BestOfferItem, BestOfferSummary } from '../types';
 
-  export let results: BestOfferItem[] = [];
-  export let summary: BestOfferSummary | undefined;
+  export let data: {
+    results: BestOfferItem[];
+    summary: BestOfferSummary | undefined;
+  } = {
+    results: [],
+    summary: undefined,
+  };
+
+  const { results, summary } = data;
 
   const table = createTable(readable(results), {
     filter: addColumnFilters(),

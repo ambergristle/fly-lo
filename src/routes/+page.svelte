@@ -1,15 +1,12 @@
 <script lang="ts">
   import { superForm } from 'sveltekit-superforms/client';
-  
-
-
-import type { PageData } from './$types';
 
   import * as Card from '$lib/components/card';
   import * as Form from '$lib/components/form';
   import DataTable from './data-table.svelte';
   import { ZQueryValues } from './schemas';
-      
+  import type { PageData } from './$types';
+    
   export let data: PageData;
 
   const form = superForm(data.form, {
@@ -48,15 +45,13 @@ import type { PageData } from './$types';
           </Form.Item>
         </Form.Field>
         <Form.RangeCalendar />
+        <Form.Button>submit</Form.Button>
       </Card.Content>
     </Form.Root>
   </Card.Root>
   {#await data.data then response}
     {#if response}
-      <DataTable
-        summary={response.summary}
-        results={response.results}
-      />
+      <DataTable data={response.data} />
     {/if}
   {/await}
 </div>
