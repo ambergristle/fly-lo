@@ -3,10 +3,12 @@
 
   import * as Card from '$lib/components/card';
   import * as Form from '$lib/components/form';
+  import DataTable from './data-table.svelte';
   import { ZQueryValues } from './schemas';
   import type { PageData } from './$types';
-  import DataTable from './data-table.svelte';
-  import { setLoading, setStore } from './store';
+
+  import { loading, setLoading, setStore } from './store';
+    import { LoadingIcon } from '$lib/components/loading-icon';
     
   export let data: PageData;
 
@@ -51,7 +53,15 @@
           </Form.Item>
         </Form.Field>
         <Form.RangeCalendar />
-        <Form.Button>submit</Form.Button>
+        <Form.Button>
+          {#if $loading}
+          <LoadingIcon
+            class="size-8 animate-spin text-muted-foreground"
+          />
+          {:else}
+          submit
+          {/if}
+        </Form.Button>
       </Card.Content>
     </Form.Root>
   </Card.Root>
