@@ -1,6 +1,6 @@
 {
   "name": "fly-lo",
-  "version": "0.0.2",
+  "version": "0.0.3",
   "author": "ambergristle",
   "license": "AGPL-3.0-or-later",
   "description": "A simple interface for querying selected airline offers",

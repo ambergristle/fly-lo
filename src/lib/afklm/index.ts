@@ -128,7 +128,7 @@ export const queryLowestFareOffers = async (params: {
     max: null,
   };
 
-  const results = response.recommendations
+  const series = response.recommendations
     .map((recommendation, index) => {
       const flightProduct = recommendation.flightProducts[0];
       const c = flightProduct.connections[0];
@@ -161,6 +161,6 @@ export const queryLowestFareOffers = async (params: {
 
   return {
     summary,
-    results,
+    series,
   };
 };

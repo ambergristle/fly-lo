@@ -1,23 +1,37 @@
 <script lang="ts">
   import { superForm } from 'sveltekit-superforms/client';
-  import {
-    Loader2 as LoadingIcon, 
-    Search as SearchIcon, 
-  } from 'lucide-svelte';
-
-  import type { PageData } from './$types';
 
   import * as Card from '$lib/components/card';
   import * as Form from '$lib/components/form';
   import DataTable from './data-table.svelte';
   import { ZQueryValues } from './schemas';
-      
+  import type { PageData } from './$types';
+
+  import { loading, setLoading, setStore } from './store';
+    import { LoadingIcon } from '$lib/components/loading-icon';
+    
   export let data: PageData;
 
   const form = superForm(data.form, {
     dataType: 'json',
   });
+
+  $: setLoading(data.data instanceof Promise);
+
+  $: data.data?.then(({ data }) => setStore(data));
+
 </script>
+
+<!-- {#if $page.form?.error}
+<Alert.Root variant="destructive">
+  <Alert.Title>
+    {`Error: ${$page.form.error.message}`}
+  </Alert.Title>
+  <Alert.Description>
+    {$page.form.error.helperText}
+  </Alert.Description>
+</Alert.Root>
+{/if} -->
 
 <div class="container">
   <Card.Root class="flex flex-row justify-center items-center">
@@ -40,34 +54,16 @@
         </Form.Field>
         <Form.RangeCalendar />
         <Form.Button>
-          {#await data.data}
-            <LoadingIcon class="mr-2 h-4 w-4 animate-spin" />
-          {:then}
-            <SearchIcon class="mr-2 h-4 w-4" />
-          {/await}
-          Search
+          {#if $loading}
+          <LoadingIcon
+            class="size-8 animate-spin text-muted-foreground"
+          />
+          {:else}
+          submit
+          {/if}
         </Form.Button>
       </Card.Content>
     </Form.Root>
   </Card.Root>
-  {#await data.data then response}
-    {#if response}
-      <DataTable
-        summary={response.summary}
-        results={response.results}
-      />
-    {/if}
-  {/await}
+  <DataTable />
 </div>
-
-
-<!-- {#if $page.form?.error}
-<Alert.Root variant="destructive">
-  <Alert.Title>
-    {`Error: ${$page.form.error.message}`}
-  </Alert.Title>
-  <Alert.Description>
-    {$page.form.error.helperText}
-  </Alert.Description>
-</Alert.Root>
-{/if} -->
