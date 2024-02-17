@@ -1,7 +1,6 @@
 
 <script lang="ts">
 
-  import { readable } from 'svelte/store';
   import { Render, Subscribe, createTable } from 'svelte-headless-table';
   import { addColumnFilters, addSortBy } from 'svelte-headless-table/plugins';
   import { keyed } from 'svelte-keyed';
@@ -11,75 +10,73 @@
 
   import { Button } from '$lib/components/button';
   import * as Table from '$lib/components/table';
-  import { Slider } from '$lib/components/slider';
-  import { minFilter } from '$lib/components/table/filters';
   import { cn } from '$lib/utils/styles';
   import { isNumber } from '$lib/utils/types';
-  import type { BestOfferItem, BestOfferSummary } from '../types';
+  import { Slider } from '$lib/components/slider';
+  import { minFilter } from '$lib/components/table/filters';
+  import { loading, series, summary } from './store';
 
-  export let data: {
-    results: BestOfferItem[];
-    summary: BestOfferSummary | undefined;
-  } = {
-    results: [],
-    summary: undefined,
-  };
-
-  const { results, summary } = data;
-
-  const table = createTable(readable(results), {
+  const table = createTable(series, {
     filter: addColumnFilters(),
     sort: addSortBy(),
   });
 
-  const columns = table.createColumns([
-    table.column({
-      accessor: 'departureDate',
-      header: 'Date',
-    }),
-    table.column({
-      accessor: 'duration',
-      header: 'Duration (hrs)',
-      cell: ({ value }) => {
-        return isNumber(value) 
-          ? (value / 60).toFixed(1) 
-          : 'ERR';
-      },
-    }),
-    table.column({
-      accessor: 'miles',
-      header: 'Miles (k)',
-      cell: ({ value }) => {
-        return isNumber(value)
-          ? value / 1000
-          : 'ERR';
-      },
-      plugins: {
-        filter: {
-          fn: minFilter,
-          initialFilterValue: summary?.max ?? 0,
+  const createColumns = (max?: number) => {
+    return table.createColumns([
+      table.column({
+        accessor: 'departureDate',
+        header: 'Date',
+      }),
+      table.column({
+        accessor: 'duration',
+        header: 'Duration (hrs)',
+        cell: ({ value }) => {
+          return isNumber(value) 
+            ? (value / 60).toFixed(1) 
+            : 'ERR';
         },
-      },
-    }),
-    table.column({
-      accessor: 'taxes',
-      header: 'Taxes',
-      cell: ({ value }) => {
-        // or return result of createRender
-        return new Intl.NumberFormat('en-US', {
-          style: 'currency',
-          currency: 'USD',
-        }).format(value);
-      },
-      plugins: {
-        sort: { disable: true },
-      },
-    }),
-    table.column({
-      accessor: 'numberOfSeatsAvailable',
-      header: 'Seats Available',
-    }),
-  ]);
+      }),
+      table.column({
+        accessor: 'miles',
+        header: 'Miles (k)',
+        cell: ({ value }) => {
+          return isNumber(value)
+            ? value / 1000
+            : 'ERR';
+        },
+        plugins: {
+          filter: {
+            fn: minFilter,
+            initialFilterValue: max,
+          },
+        },
+      }),
+      table.column({
+        accessor: 'taxes',
+        header: 'Taxes',
+        cell: ({ value }) => {
+          // or return result of createRender
+          return new Intl.NumberFormat('en-US', {
+            style: 'currency',
+            currency: 'USD',
+          }).format(value);
+        },
+        plugins: {
+          sort: { disable: true },
+        },
+      }),
+      table.column({
+        accessor: 'numberOfSeatsAvailable',
+        header: 'Seats Available',
+      }),
+    ]);
+  };
+
+  let columns = createColumns(0);
+
+  $: {
+    columns = createColumns($summary.max);
+  }
 
   const { 
     headerRows,
@@ -95,9 +92,6 @@
   $: filterValue = [$milesFilter ?? 0];
   $: milesFilter.set(filterValue[0]);
 
-  $: min = summary?.min ?? 0;
-  $: max = summary?.max ?? 0;
-
   const { sortKeys } = pluginStates.sort;
 
 </script>
@@ -105,12 +99,12 @@
 <div class="m-4">
   <Slider 
     bind:value={filterValue}
-    min={min}
-    max={max}
+    min={$summary.min}
+    max={$summary.max}
     step={10000}
   />
 </div>
-
+{$loading && 'Loading...'}
 <Table.Root {...$tableAttrs}>
   <Table.Header>
     {#each $headerRows as headerRow (headerRow.id)}

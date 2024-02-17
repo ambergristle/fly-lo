@@ -3,15 +3,21 @@
 
   import * as Card from '$lib/components/card';
   import * as Form from '$lib/components/form';
-  import DataTable from './data-table.svelte';
   import { ZQueryValues } from './schemas';
   import type { PageData } from './$types';
+  import DataTable from './data-table.svelte';
+  import { setLoading, setStore } from './store';
     
   export let data: PageData;
 
   const form = superForm(data.form, {
     dataType: 'json',
   });
+
+  $: setLoading(data.data instanceof Promise);
+
+  $: data.data?.then(({ data }) => setStore(data));
+
 </script>
 
 <!-- {#if $page.form?.error}
@@ -49,9 +55,5 @@
       </Card.Content>
     </Form.Root>
   </Card.Root>
-  {#await data.data then response}
-    {#if response}
-      <DataTable data={response.data} />
-    {/if}
-  {/await}
+  <DataTable />
 </div>
