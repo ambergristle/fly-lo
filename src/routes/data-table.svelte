@@ -22,6 +22,7 @@ const {
   tableBodyAttrs,
   sortKeys,
   filterState: {
+    preFilteredRows,
     miles: milesFilter,
     weekdays: weekdayFilter,
   }, 
@@ -45,6 +46,14 @@ const WEEKDAY_LABELS = {
 
 <div class="h-full flex flex-row">
   <div class="space-y-4 p-4 border-r">
+    <div>
+      <h4 class="scroll-m-20 text-xl font-semibold tracking-tight">
+        Filters
+      </h4>
+      <p class="leading-7 text-sm text-muted-foreground">
+        Showing {$rows.length}/{$preFilteredRows.length} results
+      </p>
+    </div>
     <FormItem>
       <Label for="max-miles">
         Max Miles ({$milesFilter / 1000}k)

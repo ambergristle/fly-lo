@@ -83,11 +83,13 @@ const createTableModel = (series: Writable<BestOfferItem[]>) => {
     pluginStates,
   } = table.createViewModel(columns);
 
-  const { filterValues } = pluginStates.filter;
+  const { filterValues, preFilteredRows } = pluginStates.filter;
   const { sortKeys } = pluginStates.sort;
 
   const milesFilter = keyed(filterValues, 'miles');
   const weekdayFilter = keyed(filterValues, 'departureDate');
+
+
 
   return {
     headerRows,
@@ -96,6 +98,7 @@ const createTableModel = (series: Writable<BestOfferItem[]>) => {
     tableBodyAttrs,
     sortKeys,
     filterState: {
+      preFilteredRows,
       miles: milesFilter,
       weekdays: weekdayFilter,
     },
