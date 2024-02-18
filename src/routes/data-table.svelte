@@ -8,13 +8,12 @@
   import { Button } from '$lib/components/button';
   import { FormItem } from '$lib/components/form';
   import { Label } from '$lib/components/label';
+  import { Slider } from '$lib/components/slider';
   import * as Table from '$lib/components/table';
   import * as ToggleGroup from '$lib/components/toggle-group';
   import { cn } from '$lib/utils/styles';
-
   import createTableModel from './model';
   import { series, summary } from './store';
-    import { Slider } from '$lib/components/slider';
     
 const {
   headerRows,
@@ -30,6 +29,18 @@ const {
 
 $: milesFilter.set([$summary.max]);
 
+const WEEKDAYS = ['0', '1', '2', '3', '4', '5', '6'] as const;
+
+const WEEKDAY_LABELS = {
+  0: 'Su',
+  1: 'Mo',
+  2: 'Tu',
+  3: 'W',
+  4: 'Th',
+  5: 'F',
+  6: 'Sa',
+};
+
 </script>
 
 <div class="h-full flex flex-row">
@@ -38,9 +49,14 @@ $: milesFilter.set([$summary.max]);
       <Label for="max-miles">
         Max Miles ({$milesFilter / 1000}k)
       </Label>
-      <Slider
-        
-      />
+      {#key $summary}
+        <Slider
+          bind:value={$milesFilter}
+          min={$summary.min}
+          max={$summary.max}
+          step={1000}
+        />
+      {/key}
     </FormItem>
     <FormItem>
       <Label for="weekdays">
@@ -51,13 +67,11 @@ $: milesFilter.set([$summary.max]);
         type="multiple"
         bind:value={$weekdayFilter}
       >
-        <ToggleGroup.Item value="0">Su</ToggleGroup.Item>
-        <ToggleGroup.Item value="1">M</ToggleGroup.Item>
-        <ToggleGroup.Item value="2">Tu</ToggleGroup.Item>
-        <ToggleGroup.Item value="3">W</ToggleGroup.Item>
-        <ToggleGroup.Item value="4">Th</ToggleGroup.Item>
-        <ToggleGroup.Item value="5">Fr</ToggleGroup.Item>
-        <ToggleGroup.Item value="6">Sa</ToggleGroup.Item>
+        {#each WEEKDAYS as weekday (weekday)}
+          <ToggleGroup.Item value={weekday}>
+            {WEEKDAY_LABELS[weekday]}
+          </ToggleGroup.Item>
+        {/each}
       </ToggleGroup.Root>
     </FormItem>
   </div>
