@@ -14,23 +14,34 @@
 
   import createTableModel from './model';
   import { series, summary } from './store';
+    import { Slider } from '$lib/components/slider';
+    
+const {
+  headerRows,
+  rows,
+  tableAttrs,
+  tableBodyAttrs,
+  sortKeys,
+  filterState: {
+    miles: milesFilter,
+    weekdays: weekdayFilter,
+  }, 
+} = createTableModel(series);
 
-  const {
-    headerRows,
-    rows,
-    tableAttrs,
-    tableBodyAttrs,
-    sortKeys,
-    filterState: {
-      // miles: milesFilter,
-      weekdays: weekdayFilter,
-    }, 
-  } = createTableModel(series, $summary.max);
+$: milesFilter.set([$summary.max]);
 
 </script>
 
 <div class="h-full flex flex-row">
   <div class="space-y-4 p-4 border-r">
+    <FormItem>
+      <Label for="max-miles">
+        Max Miles ({$milesFilter / 1000}k)
+      </Label>
+      <Slider
+        
+      />
+    </FormItem>
     <FormItem>
       <Label for="weekdays">
         Weekdays

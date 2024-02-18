@@ -6,8 +6,8 @@ import type { Writable } from 'svelte/store';
 import { isNumber } from '$lib/utils/types';
 import type { BestOfferItem } from '$types';
 
-const createTableModel = (series: Writable<BestOfferItem[]>, maxMiles: number = 0) => {
-  console.log(maxMiles);
+const createTableModel = (series: Writable<BestOfferItem[]>) => {
+
   const table = createTable(series, {
     filter: addColumnFilters(),
     sort: addSortBy(),
@@ -44,16 +44,16 @@ const createTableModel = (series: Writable<BestOfferItem[]>, maxMiles: number = 
           ? value / 1000
           : 'ERR';
       },
-      // plugins: {
-      //   filter: {
-      //     initialFilterValue: [maxMiles],
-      //     fn: ({ value, filterValue }) => {
-      //       const [max] = filterValue;
-      //       if (!isNumber(max) || !isNumber(value)) return true;
-      //       return value <= max;
-      //     },
-      //   },
-      // },
+      plugins: {
+        filter: {
+          initialFilterValue: [0],
+          fn: ({ value, filterValue }) => {
+            const [max] = filterValue; // array
+            if (!isNumber(max) || !isNumber(value)) return true;
+            return value <= max;
+          },
+        },
+      },
     }),
     table.column({
       accessor: 'taxes',
