@@ -11,9 +11,10 @@
   import { Button } from '$lib/components/button';
   import * as Table from '$lib/components/table';
   
-  import { series } from './store';
+  import { series, summary } from './store';
   import * as ToggleGroup from '$lib/components/toggle-group';
     import { keyed } from 'svelte-keyed';
+    import { Slider } from '$lib/components/slider';
     
   const table = createTable(series, {
     filter: addColumnFilters(),
@@ -54,8 +55,9 @@
       plugins: {
         filter: {
           fn: ({ value, filterValue }) => {
-            if (!isNumber(filterValue) || !isNumber(value)) return true;
-            return filterValue >= value;
+            const [max] = filterValue;
+            if (!isNumber(max) || !isNumber(value)) return true;
+            return value <= max;
           },
         },
       },
@@ -91,9 +93,16 @@
   const { filterValues } = pluginStates.filter;
   const { sortKeys } = pluginStates.sort;
 
+  const milesFilter = keyed(filterValues, 'miles');
   const weekdayFilter = keyed(filterValues, 'departureDate');
 
 </script>
+
+<Slider
+  bind:value={$milesFilter}
+  min={$summary.min}
+  max={$summary.max}
+/>
 
 <ToggleGroup.Root 
   type="multiple"
