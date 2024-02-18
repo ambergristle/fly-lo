@@ -3,13 +3,12 @@
 
   import * as Card from '$lib/components/card';
   import * as Form from '$lib/components/form';
+  import { LoadingIcon } from '$lib/components/loading-icon';
   import DataTable from './data-table.svelte';
   import { ZQueryValues } from './schemas';
+  import { loading, setLoading, setStore } from './store';
   import type { PageData } from './$types';
 
-  import { loading, setLoading, setStore } from './store';
-    import { LoadingIcon } from '$lib/components/loading-icon';
-    
   export let data: PageData;
 
   const form = superForm(data.form, {
@@ -34,7 +33,7 @@
 {/if} -->
 
 <div class="container">
-  <Card.Root class="flex flex-row justify-center items-center">
+  <Card.Root class="flex flex-row justify-center items-center my-4">
     <Form.Root
       form={form}
       schema={ZQueryValues}
@@ -55,11 +54,11 @@
         <Form.RangeCalendar />
         <Form.Button>
           {#if $loading}
-          <LoadingIcon
-            class="size-8 animate-spin text-muted-foreground"
-          />
+            <LoadingIcon
+              class="size-8 animate-spin text-muted-foreground"
+            />
           {:else}
-          submit
+            submit
           {/if}
         </Form.Button>
       </Card.Content>
