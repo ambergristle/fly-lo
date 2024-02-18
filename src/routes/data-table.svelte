@@ -1,7 +1,7 @@
 
 <script lang="ts">
   import { Render, Subscribe, createTable } from 'svelte-headless-table';
-  import { addSortBy } from 'svelte-headless-table/plugins';
+  import { addColumnFilters, addSortBy } from 'svelte-headless-table/plugins';
   import { ArrowUpDown as SortIcon } from 'lucide-svelte';
   import { ArrowUpAZ as SortAscendingIcon } from 'lucide-svelte';
   import { ArrowDownZA as SortDescendingIcon } from 'lucide-svelte';
@@ -12,8 +12,11 @@
   import * as Table from '$lib/components/table';
   
   import { series } from './store';
+  import * as ToggleGroup from '$lib/components/toggle-group';
+    import { keyed } from 'svelte-keyed';
     
   const table = createTable(series, {
+    filter: addColumnFilters(),
     sort: addSortBy(),
   });
 
@@ -21,6 +24,15 @@
     table.column({
       accessor: 'departureDate',
       header: 'Date',
+      plugins: {
+        filter: {
+          initialFilterValue: ['0', '1', '2', '3', '4', '5', '6'],
+          fn: ({ value, filterValue }) => {
+            const weekday = new Date(`${value}T00:00`).getDay();
+            return filterValue.includes(`${weekday}`);
+          },
+        },
+      },
     }),
     table.column({
       accessor: 'duration',
@@ -38,6 +50,14 @@
         return isNumber(value)
           ? value / 1000
           : 'ERR';
+      },
+      plugins: {
+        filter: {
+          fn: ({ value, filterValue }) => {
+            if (!isNumber(filterValue) || !isNumber(value)) return true;
+            return filterValue >= value;
+          },
+        },
       },
     }),
     table.column({
@@ -68,9 +88,25 @@
     pluginStates,
   } = table.createViewModel(columns);
 
+  const { filterValues } = pluginStates.filter;
   const { sortKeys } = pluginStates.sort;
 
+  const weekdayFilter = keyed(filterValues, 'departureDate');
+
 </script>
+
+<ToggleGroup.Root 
+  type="multiple"
+  bind:value={$weekdayFilter}
+>
+  <ToggleGroup.Item value="0">Su</ToggleGroup.Item>
+  <ToggleGroup.Item value="1">M</ToggleGroup.Item>
+  <ToggleGroup.Item value="2">Tu</ToggleGroup.Item>
+  <ToggleGroup.Item value="3">W</ToggleGroup.Item>
+  <ToggleGroup.Item value="4">Th</ToggleGroup.Item>
+  <ToggleGroup.Item value="5">Fr</ToggleGroup.Item>
+  <ToggleGroup.Item value="6">Sa</ToggleGroup.Item>
+</ToggleGroup.Root>
 
 <Table.Root {...$tableAttrs}>
   <Table.Header>
