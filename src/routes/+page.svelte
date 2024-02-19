@@ -28,8 +28,6 @@
     setLoading(false);
   });
 
-  $: console.log('error', error);
-
 </script>
 
 {#if error}
