@@ -1,12 +1,12 @@
 <script lang="ts">
   import { superForm } from 'sveltekit-superforms/client';
 
-  import * as Card from '$lib/components/card';
   import * as Form from '$lib/components/form';
   import DataTable from './data-table.svelte';
   import { ZQueryValues } from './schemas';
   import { setLoading, setStore } from './store';
   import type { PageData } from './$types';
+    import { Separator } from '$lib/components/separator';
 
   export let data: PageData;
 
@@ -31,15 +31,18 @@
 </Alert.Root>
 {/if} -->
 
-<div class="container">
-  <Card.Root class="flex flex-row justify-center items-center my-4">
+<div class="container h-screen py-4 flex flex-col space-y-4">
+  <h1 class="scroll-m-20 text-2xl font-semibold tracking-tight whitespace-nowrap">
+    fly-lo
+  </h1>
+  <div class="flex flex-row justify-center items-center">
     <Form.Root
       form={form}
       schema={ZQueryValues}
       controlled
       let:config
     >
-      <Card.Content class="flex flex-row items-center gap-2 pt-6">
+      <div class="flex flex-row items-center gap-2">
         <Form.Field {config} name="origin">
           <Form.Item>
             <Form.Input placeholder="SFO"/>
@@ -54,8 +57,9 @@
         <Form.Button>
           search
         </Form.Button>
-      </Card.Content>
+      </div>
     </Form.Root>
-  </Card.Root>
+  </div>
+  <Separator />
   <DataTable />
 </div>
