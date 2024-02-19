@@ -4,7 +4,7 @@
   import { ArrowUpDown as SortNeutralIcon } from 'lucide-svelte';
   import { ArrowUpAZ as SortAscendingIcon } from 'lucide-svelte';
   import { ArrowDownZA as SortDescendingIcon } from 'lucide-svelte';
-  
+
   import { Button } from '$lib/components/button';
   import { FormItem } from '$lib/components/form';
   import { Label } from '$lib/components/label';
@@ -45,7 +45,7 @@ const WEEKDAY_LABELS = {
 
 </script>
 
-<div class="h-full flex flex-row">
+<div class="flex flex-row grow h-0">
   <div class="space-y-4 p-4 border-r">
     <div>
       <h4 class="scroll-m-20 text-xl font-semibold tracking-tight">
@@ -87,83 +87,85 @@ const WEEKDAY_LABELS = {
       </ToggleGroup.Root>
     </FormItem>
   </div>
-  <Table.Root {...$tableAttrs}>
-    <Table.Header>
-      {#each $headerRows as headerRow (headerRow.id)}
-        <Subscribe 
-          rowAttrs={headerRow.attrs()} 
-          rowProps={headerRow.props()} 
-          let:rowProps
-        >
-          <Table.Row {...rowProps}>
-            {#each headerRow.cells as cell (cell.id)}
-              <Subscribe 
-                attrs={cell.attrs()}
-                let:attrs
-                props={cell.props()}
-                let:props
-              >
-                <Table.Head {...attrs}>
-                  {#if props.sort.disabled}
-                    <Render of={cell.render()}/>
-                  {:else}
-                    <Button variant="ghost" on:click={props.sort.toggle}>
+  <div class="w-full max-h-full overflow-auto relative">
+    <Table.Root {...$tableAttrs}>
+      <Table.Header class="sticky top-0 bg-secondary">
+        {#each $headerRows as headerRow (headerRow.id)}
+          <Subscribe 
+            rowAttrs={headerRow.attrs()} 
+            rowProps={headerRow.props()} 
+            let:rowProps
+          >
+            <Table.Row {...rowProps}>
+              {#each headerRow.cells as cell (cell.id)}
+                <Subscribe 
+                  attrs={cell.attrs()}
+                  let:attrs
+                  props={cell.props()}
+                  let:props
+                >
+                  <Table.Head {...attrs}>
+                    {#if props.sort.disabled}
                       <Render of={cell.render()}/>
-                        {#if props.sort.order === 'asc'}
-                          <SortAscendingIcon
+                    {:else}
+                      <Button variant="ghost" on:click={props.sort.toggle}>
+                        <Render of={cell.render()}/>
+                          {#if props.sort.order === 'asc'}
+                            <SortAscendingIcon
+                              class={cn(
+                                $sortKeys[0]?.id === cell.id && 'text-foreground',
+                                'ml-2 h-4 w-4',
+                              )}
+                            />
+                          {:else if props.sort.order === 'desc'}
+                            <SortDescendingIcon
+                              class={cn(
+                                $sortKeys[0]?.id === cell.id && 'text-foreground',
+                                'ml-2 h-4 w-4',
+                              )}
+                            />
+                          {:else}
+                          <SortNeutralIcon
                             class={cn(
                               $sortKeys[0]?.id === cell.id && 'text-foreground',
                               'ml-2 h-4 w-4',
                             )}
                           />
-                        {:else if props.sort.order === 'desc'}
-                          <SortDescendingIcon
-                            class={cn(
-                              $sortKeys[0]?.id === cell.id && 'text-foreground',
-                              'ml-2 h-4 w-4',
-                            )}
-                          />
-                        {:else}
-                        <SortNeutralIcon
-                          class={cn(
-                            $sortKeys[0]?.id === cell.id && 'text-foreground',
-                            'ml-2 h-4 w-4',
-                          )}
-                        />
-                      {/if}
-                    </Button>
-                  {/if}
-                </Table.Head>
-              </Subscribe>
-            {/each}
-          </Table.Row> 
-          <ProgressBar
-            Component={Table.Row} 
-            loading={$loading}
-            />
-        </Subscribe>
-      {/each}
-    </Table.Header>
-    <Table.Body {...$tableBodyAttrs}>
-      {#each $rows as row (row.id)}
-        <Subscribe
-          rowAttrs={row.attrs()}
-          let:rowAttrs
-        >
-          <Table.Row {...rowAttrs}>
-            {#each row.cells as cell (cell.id)}
-              <Subscribe
-                attrs={cell.attrs()}
-                let:attrs
-              >
-                <Table.Cell {...attrs}>
-                  <Render of={cell.render()} />
-                </Table.Cell>
-              </Subscribe>
-            {/each}
-          </Table.Row>
-        </Subscribe>
-      {/each}
-    </Table.Body>
-  </Table.Root>
+                        {/if}
+                      </Button>
+                    {/if}
+                  </Table.Head>
+                </Subscribe>
+              {/each}
+            </Table.Row> 
+            <ProgressBar
+              Component={Table.Row} 
+              loading={$loading}
+              />
+          </Subscribe>
+        {/each}
+      </Table.Header>
+      <Table.Body {...$tableBodyAttrs}>
+        {#each $rows as row (row.id)}
+          <Subscribe
+            rowAttrs={row.attrs()}
+            let:rowAttrs
+          >
+            <Table.Row {...rowAttrs}>
+              {#each row.cells as cell (cell.id)}
+                <Subscribe
+                  attrs={cell.attrs()}
+                  let:attrs
+                >
+                  <Table.Cell {...attrs}>
+                    <Render of={cell.render()} />
+                  </Table.Cell>
+                </Subscribe>
+              {/each}
+            </Table.Row>
+          </Subscribe>
+        {/each}
+      </Table.Body>
+    </Table.Root>
+  </div>
 </div>
