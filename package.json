@@ -1,6 +1,6 @@
 {
   "name": "fly-lo",
-  "version": "0.0.3",
+  "version": "0.0.5",
   "author": "ambergristle",
   "license": "AGPL-3.0-or-later",
   "description": "A simple interface for querying selected airline offers",
@@ -39,7 +39,7 @@
   "type": "module",
   "dependencies": {
     "@internationalized/date": "^3.5.1",
-    "bits-ui": "^0.11.8",
+    "bits-ui": "^0.18.1",
     "clsx": "^2.0.0",
     "formsnap": "^0.4.1",
     "lucide-svelte": "^0.300.0",
