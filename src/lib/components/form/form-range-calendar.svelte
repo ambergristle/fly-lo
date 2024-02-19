@@ -7,6 +7,7 @@
     DateFormatter,
     type DateValue,
   } from '@internationalized/date';
+  import { keyed } from 'svelte-keyed';
   import { Calendar as CalendarIcon } from 'lucide-svelte';
   
   import { cn } from '$lib/utils/styles';
@@ -14,12 +15,15 @@
   import * as Popover from '$lib/components/popover';
   import { RangeCalendar } from '$lib/components/range-calendar';
 
-  const { form } = getForm();
+  const { form, ...formProps } = getForm();
 
-  let value = $form.dateRange
+  const dateRange = keyed(form, 'dateRange');
+  const errors = keyed(formProps.errors, 'dateRange');
+
+  let value = $dateRange
     ? {
-      start: $form.dateRange.start ? parseDate($form.dateRange.start) : undefined,
-      end: $form.dateRange.end ? parseDate($form.dateRange.end) : undefined,
+      start: $dateRange.start ? parseDate($dateRange.start) : undefined,
+      end: $dateRange.end ? parseDate($dateRange.end) : undefined,
     }
     : undefined;
 
@@ -34,7 +38,11 @@
   <Popover.Trigger asChild let:builder>
     <Button
       variant="outline"
-      class={cn('w-[300px] justify-start text-left font-normal', !value && 'text-muted-foreground')}
+      class={cn(
+        'w-[300px] justify-start text-left font-normal', 
+        !value && 'text-muted-foreground', 
+        ($errors?.start || $errors?.end) && 'border-destructive',
+      )}
       builders={[builder]}
     >
       <CalendarIcon class="mr-2 h-4 w-4" />

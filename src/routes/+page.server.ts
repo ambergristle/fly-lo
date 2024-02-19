@@ -16,7 +16,13 @@ export const load: PageServerLoad = async ({ url }) => {
     },
   };
 
-  const form = await superValidate(query, ZQueryValues);
+  /**
+   * presence of origin assumed to indicate attempted query;
+   * if no query, omit data to avoid making form invalid on init
+   */
+  const form = query.origin
+    ? await superValidate(query, ZQueryValues)
+    : await superValidate(ZQueryValues);
 
   return { form };
 };

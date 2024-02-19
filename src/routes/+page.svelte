@@ -1,12 +1,13 @@
 <script lang="ts">
   import { superForm } from 'sveltekit-superforms/client';
 
+  import * as Alert from '$lib/components/alert';
   import * as Form from '$lib/components/form';
+  import { Separator } from '$lib/components/separator';
   import DataTable from './data-table.svelte';
   import { ZQueryValues } from './schemas';
   import { setLoading, setStore } from './store';
   import type { PageData } from './$types';
-    import { Separator } from '$lib/components/separator';
 
   export let data: PageData;
 
@@ -16,20 +17,34 @@
 
   $: setLoading(data.data instanceof Promise);
 
-  $: data.data?.then(({ data }) => setStore(data));
+  let error: {
+    message: string;
+    helperText?: string;
+   } | undefined;
+
+  $: data.data?.then((res) => {
+    /** @todo add typing */
+    if (res.success) return setStore(res.data);
+    error = res;
+    setLoading(false);
+  });
 
 </script>
 
-<!-- {#if $page.form?.error}
-<Alert.Root variant="destructive">
-  <Alert.Title>
-    {`Error: ${$page.form.error.message}`}
-  </Alert.Title>
-  <Alert.Description>
-    {$page.form.error.helperText}
-  </Alert.Description>
-</Alert.Root>
-{/if} -->
+{#if error}
+  <div class="p-2">
+    <Alert.Root variant="destructive">
+      <Alert.Title>
+        {`Error: ${error.message}`}
+      </Alert.Title>
+      {#if error.helperText}
+        <Alert.Description>
+          {error.helperText}
+        </Alert.Description>
+      {/if}
+    </Alert.Root>
+  </div>
+{/if}
 
 <div class="container h-screen py-4 flex flex-col space-y-4">
   <Form.Root
