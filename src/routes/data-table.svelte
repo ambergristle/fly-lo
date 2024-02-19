@@ -8,13 +8,14 @@
   import { Button } from '$lib/components/button';
   import { FormItem } from '$lib/components/form';
   import { Label } from '$lib/components/label';
+  import { ProgressBar } from '$lib/components/progress-bar';
   import { Slider } from '$lib/components/slider';
   import * as Table from '$lib/components/table';
   import * as ToggleGroup from '$lib/components/toggle-group';
   import { cn } from '$lib/utils/styles';
   import createTableModel from './model';
-  import { series, summary } from './store';
-    
+  import { loading, series, summary } from './store';
+  
 const {
   headerRows,
   rows,
@@ -59,12 +60,14 @@ const WEEKDAY_LABELS = {
         Max Miles ({$milesFilter / 1000}k)
       </Label>
       {#key $summary}
-        <Slider
-          bind:value={$milesFilter}
-          min={$summary.min}
-          max={$summary.max}
-          step={1000}
-        />
+        <div class="px-2">
+          <Slider
+            bind:value={$milesFilter}
+            min={$summary.min}
+            max={$summary.max}
+            step={1000}
+          />
+        </div>
       {/key}
     </FormItem>
     <FormItem>
@@ -134,6 +137,10 @@ const WEEKDAY_LABELS = {
               </Subscribe>
             {/each}
           </Table.Row> 
+          <ProgressBar
+            Component={Table.Row} 
+            loading={$loading}
+            />
         </Subscribe>
       {/each}
     </Table.Header>
