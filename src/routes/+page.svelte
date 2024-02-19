@@ -23,6 +23,7 @@
    } | undefined;
 
   $: data.data?.then((res) => {
+    /** @todo add typing */
     if (res.success) return setStore(res.data);
     error = res;
     setLoading(false);
