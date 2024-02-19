@@ -42,7 +42,7 @@
     <h1 class="hidden md:block col-span1 scroll-m-20 text-2xl font-semibold tracking-tight whitespace-nowrap">
       fly-lo
     </h1>
-    <div class="col-span-10 flex flex-row items-center justify-center space-x-2">
+    <div class="col-span-12 md:col-span-10 flex flex-row items-center justify-center space-x-2">
       <Form.Field {config} name="origin">
         <Form.Item>
           <Form.Input placeholder="SFO"/>
