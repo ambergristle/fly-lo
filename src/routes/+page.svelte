@@ -32,34 +32,33 @@
 {/if} -->
 
 <div class="container h-screen py-4 flex flex-col space-y-4">
-  <h1 class="scroll-m-20 text-2xl font-semibold tracking-tight whitespace-nowrap">
-    fly-lo
-  </h1>
-  <div class="flex flex-row justify-center items-center">
-    <Form.Root
-      form={form}
-      schema={ZQueryValues}
-      controlled
-      let:config
-    >
-      <div class="flex flex-row items-center gap-2">
-        <Form.Field {config} name="origin">
-          <Form.Item>
-            <Form.Input placeholder="SFO"/>
-          </Form.Item>
-        </Form.Field>
-        <Form.Field {config} name="destination">
-          <Form.Item>
-            <Form.Input placeholder="ATH"/>
-          </Form.Item>
-        </Form.Field>
-        <Form.RangeCalendar />
-        <Form.Button>
-          search
-        </Form.Button>
-      </div>
-    </Form.Root>
-  </div>
+  <Form.Root
+    class="grid grid-cols-12"
+    form={form}
+    schema={ZQueryValues}
+    controlled
+    let:config
+  >
+    <h1 class="hidden md:block col-span1 scroll-m-20 text-2xl font-semibold tracking-tight whitespace-nowrap">
+      fly-lo
+    </h1>
+    <div class="col-span-10 flex flex-row items-center justify-center space-x-2">
+      <Form.Field {config} name="origin">
+        <Form.Item>
+          <Form.Input placeholder="SFO"/>
+        </Form.Item>
+      </Form.Field>
+      <Form.Field {config} name="destination">
+        <Form.Item>
+          <Form.Input placeholder="ATH"/>
+        </Form.Item>
+      </Form.Field>
+      <Form.RangeCalendar />
+      <Form.Button>
+        search
+      </Form.Button>
+    </div>
+  </Form.Root>
   <Separator />
   <DataTable />
 </div>

@@ -45,7 +45,7 @@ const WEEKDAY_LABELS = {
 
 </script>
 
-<div class="flex flex-row grow">
+<div class="flex flex-row grow h-0">
   <div class="space-y-4 p-4 border-r">
     <div>
       <h4 class="scroll-m-20 text-xl font-semibold tracking-tight">
@@ -87,9 +87,9 @@ const WEEKDAY_LABELS = {
       </ToggleGroup.Root>
     </FormItem>
   </div>
-  <div class="w-full overflow-x-auto overflow-y-scroll">
+  <div class="w-full max-h-full overflow-auto relative">
     <Table.Root {...$tableAttrs}>
-      <Table.Header>
+      <Table.Header class="sticky top-0 bg-secondary">
         {#each $headerRows as headerRow (headerRow.id)}
           <Subscribe 
             rowAttrs={headerRow.attrs()} 
